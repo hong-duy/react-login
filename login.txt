@@ -1,0 +1,3 @@
+https://viblo.asia/p/sign-in-with-google-with-laravel-socialite-and-react-m68Z0V3d5kG
+https://medium.com/fantageek/how-to-use-setstate-in-react-2b090ad3bcc0
+https://console.developers.google.com/apis/credentials/oauthclient/650068002981-iivventkbtgnqjfl1cso0vs2upvkkt9t.apps.googleusercontent.com?folder=&organizationId=&project=pham-duy-253417&supportedpurview=project
