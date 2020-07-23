@@ -22,7 +22,7 @@ export interface Google {
     name: string;
     email: string;
     avatar: string;
-    user?: GoogleUser;
+    user: GoogleUser;
     avatar_original: string;
 }
 
@@ -49,7 +49,7 @@ export class GoogleModel implements Google {
     name: string = '';
     email: string = '';
     avatar: string = '';
-    user?: GoogleUser;
+    user: any = {};
     avatar_original: string = '';
 }
 
@@ -59,5 +59,4 @@ export class UserModel implements User {
     full_name: any;
     profile_url: any;
     is_new_avatar: boolean = false;
-
 }

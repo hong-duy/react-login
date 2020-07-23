@@ -1,0 +1,130 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    padding-top: 70px;
+}
+
+.mb-50 {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1140px;
+}
+
+.btn-load-more {
+    width: 160px;
+    height: 30px;
+    border: 1px solid #e81313;
+    font-size: 15px;
+    line-height: 28px;
+    color: #fff;
+    margin-top: 45px;
+    background: #e81313;
+}
+
+.list-items {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.wrap-item {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.item {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background: #fff;
+    transition: opacity .5s ease;
+    box-shadow: 0 1px 5px rgba(0,0,0,.3);
+}
+
+.item .item-thumbnail {
+    height: 200px;
+    position: relative;
+    background: #ccc;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.item .item-thumbnail img {
+    /* animation: app-logo-spin infinite 20s linear; */
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: all .7s ease;
+}
+
+.item .item-meta {
+    position: absolute;
+    top: 166px;
+    width: 100%;
+    padding: 10px 0;
+    color: #fff;
+    font-size: 12px;
+    background: #eee;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.item .item-meta span {
+    color: #fff;
+}
+
+.item .item-meta span.item-view {
+    float: left;
+    padding-left: 10px;
+}
+
+.item .item-meta span.item-publish-date {
+    float: right;
+    padding-right: 10px;
+}
+
+.item .item-title {
+    padding: 15px 10px 0;
+}
+
+.item .item-title a {
+    color: #00a920;
+    font-size: 16px;
+    height: 40px;
+    line-height: 20px;
+    display: -moz-box;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -moz-box-orient: horizontal;
+    -webkit-box-orient: horizontal;
+    box-orient: horizontal;
+}
+
+.item .item-desc {
+    padding: 15px 0;
+}
+
+.item .item-desc p {
+    margin: 0;
+    padding: 0 10px;
+    width: 100%;
+    height: 42px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+}

@@ -1,30 +1,75 @@
 import React from 'react';
 import Menu from '../Menu';
-import logo from '../../logo.svg';
 import '../../App.css';
+import '../../styles/Items.scss';
+import { useState, useEffect } from "react";
 
-export default class Home extends React.Component {
-  render() {
-    return (
-      <>
-        <Menu />
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Edit <code>src/App.tsx</code> and save to reload.
-				</p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-				</a>
-          </header>
-        </div>
-      </>
-    )
-  }
+interface Provider {
+	id: number;
+	thumbnail: string;
+	title: string;
+	views: number;
+	published_at: string;
+	description: string;
+	slug: string
+}
+
+export default function Home() {
+	const [items, setItems] = useState<Provider[]>([]);
+	const [offset, setOffset] = useState(0)
+	const [limit] = useState(12)
+
+	/**
+	   * Same with componentDidMount()
+	   */
+
+	useEffect(() => {
+		getData();
+	}, []);
+
+	const getData = async () => {
+		const res = await fetch(`https://tinanime.com/api/news/?offset=${offset}&limit=${limit}`);
+		const result = await res.json();
+		setItems(prev => [...prev, ...result]);
+		// setItems([...items, ...result ]);
+	}
+
+	const loadMore = async () => {
+		setOffset(limit + offset);
+		getData();
+	}
+
+	return (
+		<>
+			<Menu />
+			<div className="container">
+				<div className="list-items">
+					{
+						items.map((item: Provider, i: number) =>
+							<div className="wrap-item" key={i}>
+								<div className="item">
+									<div className="item-thumbnail">
+										<a href={item.slug}>
+											<img src={item.thumbnail} alt={item.title} />
+										</a>
+									</div>
+									<div className="item-title">
+										<a href={item.slug}>{item.title}</a>
+									</div>
+									<div className="item-meta">
+										<span className="item-view">{item.views} lượt xem</span>
+										<span className="item-publish-date">{item.published_at}</span>
+									</div>
+									<div className="item-desc">
+										<p>{item.description}</p>
+									</div>
+								</div>
+							</div>
+						)
+					}
+				</div>
+				<div className="mb-50"><button onClick={loadMore} className="btn-load-more">Xem thêm</button></div>
+			</div>
+		</>
+	)
 }

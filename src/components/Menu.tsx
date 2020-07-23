@@ -1,16 +1,17 @@
 import React from 'react';
 import '../styles/Menu.scss';
+import { CONFIG } from '../components/configs/config';
 
 export default class Menu extends React.Component {
     state = {
         isFixed: false,
-        offsetTop: 50,
-        googleLoginUrl: null,
+        offsetTop: 50
     }
 
     async componentDidMount() {
         window.addEventListener('scroll', this.fixedNavBar);
-        this.getGoogleLoginURL();
+        console.log(CONFIG.GOOGLE_LOGIN_URL);
+        //this.getGoogleLoginURL();
     }
 
     componentWillUnmount() {
@@ -32,28 +33,18 @@ export default class Menu extends React.Component {
         const { isFixed, offsetTop } = this.state;
         window.scrollY > offsetTop ? !isFixed && this.setState({ isFixed: true }) : isFixed && this.setState({ isFixed: false });
     }
-
-    handleClick = () => {
-        console.log('login');
-    }
-
+    
     render() {
         const classFixed = this.state.isFixed ? 'affix' : '';
-        const { googleLoginUrl } = this.state;
 
         return (
             <nav className={`navbar nav-tick ${classFixed}`}>
-                {
-                    googleLoginUrl && <ul className="nav-menu">
-                        <li>
-                            {/* <button className="item" onClick={this.handleClick}>Login</button> */}
-                            <a className="item" href={googleLoginUrl ?? ''}>
-                                Sign in with Google
-                            </a>
-                        </li>
-                    </ul>
-                }  
-            </nav> 
+                <ul className="nav-menu">
+                    <li>
+                        <a className="item" href={CONFIG.GOOGLE_LOGIN_URL}>Sign in with Google</a>
+                    </li>
+                </ul>
+            </nav>
         )
     }
 }
