@@ -17,17 +17,17 @@ interface Provider {
 export default function Home() {
 	let [items, setItems] = useState<Provider[]>([]);
 	const [offset, setOffset] = useState(0)
-	
+
 	useEffect(() => {
-		async function fetchProduct() {
-			const response = await fetch(`https://tinanime.com/api/news/?offset=${offset}&limit=8`);
-			const json = await response.json();
+		async function fetchAnime() {
+			const res = await fetch(`https://tinanime.com/api/news/?offset=${offset}&limit=8`);
+			const animes = await res.json();
 			// const current = [...items, ...json];
 			// setItems(current);
-			setItems(prevPokemonList => [...prevPokemonList , ...json]);
+			setItems(prevAnimes => [...prevAnimes, ...animes]);
 		}
 
-		fetchProduct();
+		fetchAnime();
 	}, [offset]); // ✅
 
 	const loadMore = async () => {
