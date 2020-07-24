@@ -15,28 +15,23 @@ interface Provider {
 }
 
 export default function Home() {
-	const [items, setItems] = useState<Provider[]>([]);
+	let [items, setItems] = useState<Provider[]>([]);
 	const [offset, setOffset] = useState(0)
-	const [limit] = useState(12)
-
-	/**
-	   * Same with componentDidMount()
-	   */
-
+	
 	useEffect(() => {
-		getData();
-	}, []);
+		async function fetchProduct() {
+			const response = await fetch(`https://tinanime.com/api/news/?offset=${offset}&limit=8`);
+			const json = await response.json();
+			// const current = [...items, ...json];
+			// setItems(current);
+			setItems(prevPokemonList => [...prevPokemonList , ...json]);
+		}
 
-	const getData = async () => {
-		const res = await fetch(`https://tinanime.com/api/news/?offset=${offset}&limit=${limit}`);
-		const result = await res.json();
-		setItems(prev => [...prev, ...result]);
-		// setItems([...items, ...result ]);
-	}
+		fetchProduct();
+	}, [offset]); // ✅
 
 	const loadMore = async () => {
-		setOffset(limit + offset);
-		getData();
+		setOffset(offset + 8);
 	}
 
 	return (
