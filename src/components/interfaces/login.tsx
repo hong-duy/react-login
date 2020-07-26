@@ -1,16 +1,22 @@
 export interface Login {
     loading: boolean;
     error: any;
+    message: any;
     user: User;
-    google: Google;
+    token: null | string;
 }
 
 export interface User {
-    about_me: string;
-    nick_name: string;
-    full_name: string;
-    profile_url: string;
-    is_new_avatar: boolean;
+    uuid?: string;
+    about_me?: null;
+    email?: string;
+    full_name?: null | string;
+    is_new_avatar?: boolean
+    nick_name?: null | string;
+    profile_url?: string;
+    social_id?: string;
+    created_at?: null | string;
+    updated_at?: null | string;
 }
 
 export interface Google {

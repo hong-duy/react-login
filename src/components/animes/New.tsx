@@ -1,8 +1,10 @@
 import React from 'react';
-import Menu from '../Menu';
+import logo from "../../logo.svg";
 import '../../App.css';
 import '../../styles/Items.scss';
 import { useState, useEffect } from "react";
+import CONFIG from '../../configs/config';
+import { GetList } from '../../api/HandleRequest';
 
 interface Provider {
 	id: number;
@@ -14,29 +16,28 @@ interface Provider {
 	slug: string
 }
 
-export default function Home() {
+export default function New() {
 	let [items, setItems] = useState<Provider[]>([]);
-	const [offset, setOffset] = useState(0)
+	const [offset, setOffset] = useState(0);
+	const [isLoading, setLoading] = useState(false);
 
 	useEffect(() => {
 		async function fetchAnime() {
-			const res = await fetch(`https://tinanime.com/api/news/?offset=${offset}&limit=8`);
-			const animes = await res.json();
-			// const current = [...items, ...json];
-			// setItems(current);
-			setItems(prevAnimes => [...prevAnimes, ...animes]);
+			const res = await GetList(CONFIG.API_NEWS, 8, offset);
+			setItems(prevAnimes => [...prevAnimes, ...res.result]);
+			setLoading(false);
 		}
 
 		fetchAnime();
 	}, [offset]); // ✅
 
 	const loadMore = async () => {
+		setLoading(true);
 		setOffset(offset + 8);
 	}
 
 	return (
 		<>
-			<Menu />
 			<div className="container">
 				<div className="list-items">
 					{
@@ -63,7 +64,15 @@ export default function Home() {
 						)
 					}
 				</div>
-				<div className="mb-50"><button onClick={loadMore} className="btn-load-more">Xem thêm</button></div>
+				<div className="mb-50">
+					<button className="btn-load-more" onClick={loadMore}>
+						<p>
+							<span className="bg" />
+							<span className="base" />
+							<span className="text">	{isLoading ? <img className="spinner" src={logo} alt="loading icon" /> : "Xem thêm"}</span>
+						</p>
+					</button>
+				</div>
 			</div>
 		</>
 	)

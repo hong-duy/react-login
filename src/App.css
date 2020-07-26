@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+
+.spinner {
+  animation: spinner infinite .9s linear;
+  height: 90%;
+}
+
+.spinner:focus{
+  border:none;
+}
+
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

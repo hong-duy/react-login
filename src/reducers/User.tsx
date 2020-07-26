@@ -1,4 +1,6 @@
-export default function countReducer(state: any, action: any) {
+import { Login } from "../components/interfaces/login";
+
+export function countReducer(state: any, action: any) {
 
   switch (action.type) {
 
@@ -12,10 +14,20 @@ export default function countReducer(state: any, action: any) {
   }
 }
 
-export function userReducer(userState: any, action: any) {
+export const userState = {
+  loading: false,
+  error: false,
+  message: null,
+  token: null,
+  user: {}
+} as Login;
+
+export function userReducer(state: Login, action: any) {
   switch (action.type) {
-    case "GET_USER_INFO":
-      return { ...userState, ...action.payload };
+    case "LOGIN_FAIL":
+      return { ...state, error: true, message: action.payload.message };
+    case "LOGIN_SUCCESS":
+      return { ...state, token: action.payload.token, user: action.payload.user };
     default:
       throw new Error();
   }
