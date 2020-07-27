@@ -1,7 +1,5 @@
 export interface Login {
-    loading: boolean;
-    error: any;
-    message: any;
+    isAuthenticated: boolean;
     user: User;
     token: null | string;
 }
