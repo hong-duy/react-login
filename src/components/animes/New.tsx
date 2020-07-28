@@ -1,6 +1,5 @@
 import React from 'react';
 import logo from "../../logo.svg";
-import '../../App.css';
 import '../../styles/Items.scss';
 import { useState, useEffect } from "react";
 import CONFIG from '../../configs/config';

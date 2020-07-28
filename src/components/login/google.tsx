@@ -13,7 +13,7 @@ export default function LoginGoogle() {
     useEffect(() => {
         async function login() {
             console.log(location.search)
-            const res = await loginCallback('google', location.search);
+            const res = await loginCallback('google', {a: "bb"});
             if (res.isError) {
                 return dispatchUser({ type: "LOGIN_FAIL", payload: res.message });
             }

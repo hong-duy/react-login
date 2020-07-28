@@ -48,8 +48,8 @@ export async function fetchData(URL: string, method: string = 'GET', body?: obje
     return HandleResponse(result);
 }
 
-export async function loginCallback(driver: string, param: string) {
-    return await fetchData(`${CONFIG.API_AUTH_CALLBACK}/${driver}${param}`);
+export async function loginCallback(driver: string, body?: object) {
+    return await fetchData(`${CONFIG.API_AUTH_CALLBACK}/${driver}`, 'POST', body);
 }
 
 /**

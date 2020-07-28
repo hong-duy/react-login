@@ -14,6 +14,7 @@ export function userReducer(state: Login, action: any) {
     case "LOGIN":
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("token", JSON.stringify(action.payload.token));
+      localStorage.setItem("isAuthenticated", "true");
       return {
         isAuthenticated: true,
         user: action.payload.user,
