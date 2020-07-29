@@ -3,7 +3,7 @@ import logo from "../../logo.svg";
 import '../../styles/Items.scss';
 import { useState, useEffect } from "react";
 import CONFIG from '../../configs/config';
-import { GetList } from '../../api/HandleRequest';
+import { getList } from '../../api/HandleRequest';
 
 interface Provider {
 	id: number;
@@ -22,7 +22,7 @@ export default function New() {
 
 	useEffect(() => {
 		async function fetchAnime() {
-			const res = await GetList(CONFIG.API_NEWS, 8, offset);
+			const res = await getList(CONFIG.API_NEWS, 8, offset);
 			setItems(prevAnimes => [...prevAnimes, ...res.result]);
 			setLoading(false);
 		}

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-route
 import New from './components/animes/New';
 import Main from './components/layout/Main';
 import LoginGoogle from './components/login/google';
+import { getList, getToken } from './api/HandleRequest';
+import CONFIG from './configs/config';
 
 
 function NoMatch() {
@@ -18,9 +20,25 @@ function NoMatch() {
 }
 
 function Home() {
+
+  async function getData()
+  {
+    await getList(CONFIG.API_IMAGE, 8, 0);
+  }
+
+  async function refreshToken()
+  {
+    const res = await getToken(CONFIG.API_REFRESH_TOKEN);
+    if (!res.isError) {
+      localStorage.setItem("token", JSON.stringify(res.result.token));
+    }
+  }
+
   return (
     <div className="container">
       <h2>Home page</h2>
+      <button className="btn-load-more" onClick={getData}><p><span className="bg"></span><span className="base"></span><span className="text">Check Token</span></p></button>
+      <button className="btn-load-more" onClick={refreshToken}><p><span className="bg"></span><span className="base"></span><span className="text">Refresh Token</span></p></button>
     </div>
   );
 }

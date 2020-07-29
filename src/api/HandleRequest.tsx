@@ -1,11 +1,31 @@
 import HandleResponse from './HandleResponse';
-import { objectToQueryString } from '../common/Utils';
+import { objectToQueryString, isEmpty } from '../common/Utils';
 import CONFIG from '../configs/config';
 
-const headerOptions = {
-    "Content-Type": "application/json",
-    "Accept": "application/json"
-};
+export function setHeader() {
+    let options = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    } as any;
+
+    const token =  localStorage.getItem('token');
+    if (!isEmpty(token)) {
+        options.Authorization = `Bearer ${JSON.parse(localStorage.getItem('token')!)}`
+    }
+
+    return options;
+}
+
+export const getToken = async (URL: string) => {
+    const requestInit = {
+        method: "POST",
+        headers: setHeader()
+    } as RequestInit;
+
+    const result = await fetch(URL, requestInit);
+
+    return HandleResponse(result);
+}
 
 /**
  * Make request with method get
@@ -20,10 +40,10 @@ const headerOptions = {
  * 
  * @return HandleResponse
  */
-export const GetList = async (URL: string, limit: number = 10, offset: number = 10) => {
+export const getList = async (URL: string, limit: number = 10, offset: number = 10) => {
     const requestInit = {
         method: "GET",
-        headers: headerOptions
+        headers: setHeader()
     } as RequestInit;
 
     const queryString = objectToQueryString( { limit, offset }, '=', '&');
@@ -36,7 +56,7 @@ export const GetList = async (URL: string, limit: number = 10, offset: number = 
 export async function fetchData(URL: string, method: string = 'GET', body?: object) {
     let requestInit = {
         method: method,
-        headers: headerOptions
+        headers: setHeader()
     } as RequestInit;
 
     if (method === 'POST' || method === 'PUT') {
@@ -71,7 +91,7 @@ export const findOne = async (url: string, id: string, columns?: string[]) => {
 
     const result = await fetch(fullUrl, {
         method: "GET",
-        headers: headerOptions,
+        headers: setHeader(),
     });
 
     return HandleResponse(result);
@@ -88,7 +108,7 @@ export const findOne = async (url: string, id: string, columns?: string[]) => {
 export const Store = async (url: string, model: object) => {
     const result = await fetch(`${url}`, {
         method: "POST",
-        headers: headerOptions,
+        headers: setHeader(),
         body: JSON.stringify(model)
     });
 
@@ -111,7 +131,7 @@ export const Store = async (url: string, model: object) => {
 export const Edit = async (url: string, id: number | string) => {
     const result = await fetch(`${url}/${id}/edit`, {
         method: "GET",
-        headers: headerOptions,
+        headers: setHeader(),
     });
 
     return HandleResponse(result);
@@ -129,7 +149,7 @@ export const Edit = async (url: string, id: number | string) => {
 export const Update = async (url: string, model: object, id: string | number) => {
     const result = await fetch(`${url}/${id}`, {
         method: "PUT",
-        headers: headerOptions,
+        headers: setHeader(),
         body: JSON.stringify(model)
     });
 
@@ -146,7 +166,7 @@ export const Update = async (url: string, model: object, id: string | number) =>
 export const Destroy = async (url: string, id: string) => {
     const result = await fetch(`${url}/${id}`, {
         method: "DELETE",
-        headers: headerOptions
+        headers: setHeader()
     });
 
     return HandleResponse(result);
