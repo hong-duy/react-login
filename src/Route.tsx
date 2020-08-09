@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-router-dom';
+import CONFIG from './configs/config';
 import New from './components/animes/New';
 import Main from './components/layout/Main';
-import LoginGoogle from './components/login/google';
 import { getList, getToken } from './api/HandleRequest';
-import CONFIG from './configs/config';
-
+import Form from './components/form/Index';
 
 function NoMatch() {
   let location = useLocation();
@@ -23,7 +22,8 @@ function Home() {
 
   async function getData()
   {
-    await getList(CONFIG.API_IMAGE, 8, 0);
+    // await getList(CONFIG.API_IMAGE, 8, 0);
+    await getList(CONFIG.API_POST_TEST, 8, 0);
   }
 
   async function refreshToken()
@@ -51,12 +51,21 @@ function Character() {
   );
 }
 
+// function Form() {
+//   return (
+//     <div className="container">Form</div>
+//   );
+// }
+
 export default function AppRoute() {
   return (
     <Router>
       <Main>
         <Switch>
           <Route exact path="/">
+            <Form />
+          </Route>
+          <Route exact path="/form">
             <Home />
           </Route>
           <Route exact path="/tin-tuc-anime">
@@ -64,9 +73,6 @@ export default function AppRoute() {
           </Route>
           <Route exact path="/nhan-vat">
             <Character />
-          </Route>
-          <Route exact path="/auth/google">
-            <LoginGoogle />
           </Route>
           <Route>
             <NoMatch />

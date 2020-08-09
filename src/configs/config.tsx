@@ -1,10 +1,11 @@
 const CONFIG = {
-    GOOGLE_LOGIN_URL: 'https://accounts.google.com/o/oauth2/auth?client_id=650068002981-iivventkbtgnqjfl1cso0vs2upvkkt9t.apps.googleusercontent.com&redirect_uri=https://localhost:3000/auth/google&scope=openid profile email&response_type=code&access_type=offline&prompt=consent+select_account',
-    API_POST: 'https://tinanime.com/api/news/?offset=12&limit=10',
+    GOOGLE_CLIENT_ID: '',
+    API_POST: '',
     API_AUTH_CALLBACK: '/api/authentication',
     API_NEWS: 'https://tinanime.com/api/news/',
     API_IMAGE: '/api/v1/images',
-    API_REFRESH_TOKEN: 'api/refresh-token'
+    API_REFRESH_TOKEN: 'api/refresh-token',
+    API_POST_TEST: '/api/v1/posts'
 }
 
 export default CONFIG;

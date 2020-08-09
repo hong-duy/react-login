@@ -6,6 +6,7 @@ import { AuthContext } from '../../reducers/Auth';
 import { GoogleLogin } from 'react-google-login';
 import { loginCallback } from '../../api/HandleRequest';
 import { User } from '../interfaces/login';
+import CONFIG from '../../configs/config';
 
 
 export default function Nav() {
@@ -22,12 +23,13 @@ export default function Nav() {
     console.log(response);
   }
 
-  console.log('%c RENDER NAVBAR', 'color: orange; font-size: 20px')
+  // console.log('%c RENDER NAVBAR', 'color: orange; font-size: 20px')
   return (
     <nav className="navbar nav-tick">
       <div className="container">
         <ul className="nav-menu">
           <li><Link to='/' className="item">Home</Link></li>
+          <li><Link to='/form' className="item">Form</Link></li>
           <li><Link to='/tin-tuc-anime' className="item">Tin tức anime</Link></li>
           <li><Link to='/nhan-vat' className="item">Nhân vật</Link></li>
           {
@@ -35,7 +37,7 @@ export default function Nav() {
               <li className="login"><button onClick={() => dispatch({ type: "LOGOUT" })}><img src={user.profile_url} alt=""/></button></li> :
               <li className="login">
                 <GoogleLogin
-                  clientId="650068002981-iivventkbtgnqjfl1cso0vs2upvkkt9t.apps.googleusercontent.com"
+                  clientId={CONFIG.GOOGLE_CLIENT_ID}
                   render={renderProps => (
                     <button onClick={renderProps.onClick} disabled={renderProps.disabled}><img src={avatar} alt="" /></button>
                   )}

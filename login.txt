@@ -14,7 +14,6 @@ https://www.youtube.com/watch?v=CqAtv-J_0zY
 https://symfonycasts.com/screencast/oauth/refresh-token
 
 https://viblo.asia/p/xay-dung-api-login-su-dung-cac-dich-vu-mang-xa-hoi-facebook-twitter-google-bWrZnekYKxw
-https://viblo.asia/p/xay-dung-api-login-su-dung-cac-dich-vu-mang-xa-hoi-facebook-twitter-google-bWrZnekYKxw
 
 https://viblo.asia/p/su-dung-jwt-authentication-api-trong-laravel-7-3Q75wmr2ZWb
 https://techblog.vn/react-laravel-width-jwt-authentication
@@ -27,3 +26,14 @@ https://www.freecodecamp.org/news/state-management-with-react-hooks/
 https://github.com/samie820/hooks-state-management
 
 https://codesandbox.io/s/cold-monad-6hxw3?file=/src/components/Login.js:486-502
+
+
+const authClientMiddleware = (done) => {
+    if (new Date(localStorage.getItem('expiration')) <= new Date()) {
+        getNewToken(localStorage.getItem('refreshToken')).then(() => done()).catch(() => logout());
+    } else {
+        done();
+    }
+}
+
+https://github.com/anthonyjgrove/react-google-login/issues/175
