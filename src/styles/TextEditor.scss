@@ -1,0 +1,134 @@
+.ql-container {
+    height: 300px;
+}
+
+.custom-toolbar {
+    & > button, & > span  {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+
+        svg {
+            display: none;
+        }
+    }
+
+    .ql-bold {
+        background-image: url(../images/editor/b.png) !important; 
+    }
+
+    .header-one {
+        background-image: url(../images/editor/h1.png) !important; 
+    }
+
+    .header-two {
+        background-image: url(../images/editor/h2.png) !important; 
+    }
+
+    .header-three {
+        background-image: url(../images/editor/h3.png) !important; 
+    }
+
+    .ql-images {
+        background-image: url(../images/editor/media.png) !important;
+    }
+
+    .ql-video {
+        background-image: url(../images/editor/video.png) !important;
+    }
+
+    .ql-link {
+        background-image: url(../images/editor/link.png) !important;
+    }
+
+    .ql-remove {
+        background-image: url(../images/editor/unlink.png) !important;
+    }
+
+    .ql-undo {
+        background-image: url(../images/editor/undo.png) !important;
+    }
+
+    .ql-redo {
+        background-image: url(../images/editor/redo.png) !important;
+    }
+
+    .ql-italic {
+        background-image: url(../images/editor/i.png) !important;
+    }
+
+    .ql-underline {
+        background-image: url(../images/editor/u.png) !important;
+    }
+
+    .ql-color {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/text-color.png) !important;
+    }
+    
+    .ql-background {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/bg-color.png) !important;
+    }
+
+    .ql-ordered {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/ordered.png) !important;
+    }
+
+    .ql-bullet {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/bullet.png) !important;
+    }
+
+    .ql-blockquote {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/blockquote.png) !important;
+    }
+
+    .ql-aleft {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/align-left.png) !important;
+    }
+
+    .ql-acenter {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/align-center.png) !important;
+    }
+
+    .ql-aright {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/align-right.png) !important;
+    }
+
+    .ql-ajustify {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/align-justify.png) !important;
+    }
+
+    .ql-super {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/superscript.png) !important;
+    }
+
+    .ql-sub {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/subscript.png) !important;
+    }
+
+    .ql-clean {
+        background: no-repeat scroll 50% 50% transparent !important;
+        text-align: center;
+        background-image: url(../images/editor/clear.png) !important;
+    }
+}

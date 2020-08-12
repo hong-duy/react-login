@@ -3,9 +3,9 @@ import './globals';
 import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css';
 import 'react-summernote/lang/summernote-vi-VN';
-import '~/../bootstrap/js/dist/modal';
-import '~/../bootstrap/js/dist/dropdown';
-import '~/../bootstrap/js/dist/tooltip';
+import 'bootstrap/js/dist/modal';
+import 'bootstrap/js/dist/dropdown';
+import 'bootstrap/js/dist/tooltip';
 
 export default function Form() {
 

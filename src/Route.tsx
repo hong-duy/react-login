@@ -4,7 +4,9 @@ import CONFIG from './configs/config';
 import New from './components/animes/New';
 import Main from './components/layout/Main';
 import { getList, getToken } from './api/HandleRequest';
-import Form from './components/form/Index';
+import Form from './components/EditorCustom/Index';
+import EditorCustom from './components/EditorCustom/EditorCustom';
+import Editor from './components/Editor/Index';
 
 function NoMatch() {
   let location = useLocation();
@@ -51,22 +53,22 @@ function Character() {
   );
 }
 
-// function Form() {
-//   return (
-//     <div className="container">Form</div>
-//   );
-// }
-
 export default function AppRoute() {
   return (
     <Router>
       <Main>
         <Switch>
           <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/form-one">
             <Form />
           </Route>
-          <Route exact path="/form">
-            <Home />
+          <Route exact path="/form-two">
+            <EditorCustom />
+          </Route>
+          <Route exact path="/form-three">
+            <Editor />
           </Route>
           <Route exact path="/tin-tuc-anime">
             <New />

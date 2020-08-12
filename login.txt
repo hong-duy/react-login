@@ -37,3 +37,10 @@ const authClientMiddleware = (done) => {
 }
 
 https://github.com/anthonyjgrove/react-google-login/issues/175
+
+
+https://codepen.io/knekk/pen/odwELZ?editors=1010
+
+https://codepen.io/alexkrolick/pen/gmroPj?editors=0011
+
+https://codesandbox.io/s/react-quill-full-toolbar-j569z?file=/src/EditorToolbar.js:3088-3569

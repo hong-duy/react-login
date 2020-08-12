@@ -30,6 +30,8 @@ export default function Nav() {
         <ul className="nav-menu">
           <li><Link to='/' className="item">Home</Link></li>
           <li><Link to='/form' className="item">Form</Link></li>
+          <li><Link to='/form-two' className="item">Editor customize</Link></li>
+          <li><Link to='/form-three' className="item">Editor normal</Link></li>
           <li><Link to='/tin-tuc-anime' className="item">Tin tức anime</Link></li>
           <li><Link to='/nhan-vat' className="item">Nhân vật</Link></li>
           {
