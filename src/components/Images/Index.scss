@@ -129,6 +129,7 @@ figure {
         .text {
             height: 60px;
             line-height: 26px;
+            overflow: hidden;
             color: $grayColor;
         }
     }

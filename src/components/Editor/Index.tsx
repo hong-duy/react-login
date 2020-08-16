@@ -1,8 +1,8 @@
 import 'react-quill/dist/quill.snow.css'
 import '../Images/Index.scss'
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import ReactQuill from 'react-quill'
-import Toolbar from "./Toolbar"
+import Toolbar, { undoChange, redoChange } from "./Toolbar"
 import CONFIG from "../../configs/config"
 import { getList } from '../../api/HandleRequest'
 import RSC from "react-scrollbars-custom"
@@ -26,9 +26,8 @@ export default function Editor() {
   const [height] = useState(window.innerHeight)
   const [images, setImages] = useState<Provider[]>([])
   const [isLoading, setLoading] = useState(true)
-  const [totalPage, setTotalPage] = useState(0)
+  const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(0)
-
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
     // console.log(editor.getHTML()); // rich text
@@ -36,25 +35,22 @@ export default function Editor() {
     // console.log(editor.getLength()); // number of characters
   }
 
+  useEffect(() => {
+    async function getImages() {
+      setLoading(true);
+      const res = await getList(CONFIG.API_IMAGE, page)
+      setImages(res.result.data)
+      setTotalPage(res.result.meta.total_pages);
+      setLoading(false)
+    }
+    if (isDispayPopup) {
+      getImages()
+    }
+  }, [page, isDispayPopup])
+
+
   async function handleImageList() {
-    setLoading(true);
     setIsDispayPopup(true);
-    getImages();
-  }
-
-  async function getImages() {
-    const res = await getList(CONFIG.API_IMAGE)
-    setImages(res.result.data)
-    setTotalPage(res.result.meta.total_pages);
-    setLoading(false)
-  }
-
-  function undoChange(this: any) {
-    this.quill.history.undo()
-  }
-
-  function redoChange(this: any) {
-    this.quill.history.redo()
   }
 
   const modules = {
@@ -73,7 +69,6 @@ export default function Editor() {
     }
   };
 
-
   function handleClose() {
     setIsDispayPopup(false)
   }
@@ -87,9 +82,12 @@ export default function Editor() {
       return <Loading totalItem={6} col={4} clsName="d-flex flex-wrap wrap-list" />
     }
 
-    return <ImageList items={images} onChange={handleTest} clsName="d-flex flex-wrap wrap-list"/>
+    return <ImageList items={images} onChange={handleTest} clsName="d-flex flex-wrap wrap-list" />
   }
 
+  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
   return (
 
     <div className="container">
@@ -111,12 +109,10 @@ export default function Editor() {
                 <button className="arrow arrow-expand" />
               </header>
               <RSC noScrollX={true} style={{ height: height - 230 }}>
-                <div className="d-flex flex-wrap wrap-list">
-                  { displayItem()}
-                </div>
+                  {displayItem()}
               </RSC>
               <footer className="footer">
-                <Pagination count={totalPage} page={page} boundaryCount={4} onChange={(_event, value) => setPage(value)} showFirstButton showLastButton />
+                <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />
               </footer>
             </div>
           </div>

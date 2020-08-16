@@ -40,13 +40,13 @@ export const getToken = async (URL: string) => {
  * 
  * @return HandleResponse
  */
-export const getList = async (URL: string, limit: number = 10, offset: number = 10) => {
+export const getList = async (URL: string, page = 0, limit: number = 10, offset: number = 10) => {
     const requestInit = {
         method: "GET",
         headers: setHeader()
     } as RequestInit;
 
-    const queryString = objectToQueryString( { limit, offset }, '=', '&');
+    const queryString = page > 0 ? objectToQueryString( { page }, '=', '&') :objectToQueryString( { limit, offset }, '=', '&');
     const result = await fetch(`${URL}?${queryString}`, requestInit);
 
     return HandleResponse(result);

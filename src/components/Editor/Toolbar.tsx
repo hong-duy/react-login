@@ -29,6 +29,15 @@ const CustomImage = () => (
 )
 
 
+export function undoChange(this: any) {
+    this.quill.history.undo()
+}
+
+export function redoChange(this: any) {
+    this.quill.history.redo()
+}
+
+
 // Quill Toolbar component
 export const Toolbar = () => (
     <div id="toolbar">
