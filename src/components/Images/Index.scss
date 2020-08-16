@@ -1,0 +1,198 @@
+$grayColor: #9b9fa6;
+
+.overlay-box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    color: #fff;
+    text-align: center;
+    transition: all 700ms ease;
+
+    &:before {
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 900ms ease;
+        background-color: rgba(13,41,51,.8);
+        transform: rotateX(-180deg);
+    }
+    
+    .overlay-inner {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: table;
+        vertical-align: middle;
+        padding: 10px 0;
+
+        .content {
+            position: relative;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .handle-action {
+            position: relative;
+            display: inline-block;
+            font-size: 15px;
+            color: #cda274;
+            background: #fff;
+            width: 45px;
+            height: 45px;
+            line-height: 46px;
+            text-align: center;
+            cursor: pointer;
+            
+            & > svg {
+                color: #82c91e
+            }
+        }
+    }
+}
+
+.single-item {
+    background: #fff;
+    transition: all 500ms ease;
+}
+
+figure {
+    margin: 0;
+    max-width: 100%;
+    display: block;
+}
+
+.image-box {
+    position: relative;
+    display: block;
+    margin-bottom: 0;
+    height: 230px;
+    overflow: hidden;
+
+    picture {
+        display: flex;
+        height: 100%;
+    }
+
+    .time {
+        position: absolute;
+        bottom: 0px;
+        padding: 10px;
+        padding-top: 7px;
+        color: #444444;
+        background: rgba(255,255,255,0.7);
+        width: 100%;
+        height: 40px;
+        transition: all .4s;
+    }
+}
+
+.inner-box {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 25px;
+    img {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    &:hover {
+        .overlay-box {
+            opacity: 1;
+            &:before {
+                transform: rotateX(0deg);
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    .lower-content {
+        position: relative;
+        height: 80px;
+        padding: 10px 20px;
+        border: 1px solid #e1e6eb;
+        border-top: none;
+        
+        .text {
+            height: 60px;
+            line-height: 26px;
+            color: $grayColor;
+        }
+    }
+}
+
+.image-manager {
+    position: fixed;
+    width: auto;
+    top: 30px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    padding: 50px 0;
+    background: rgba(0, 0, 0, 0.6);
+    .box {
+        // padding: 50px;
+        background: #f6f6f6;
+    }
+
+    .header {
+        height: 44px;
+        background: #000000;
+
+        .arrow {
+            background: url(../../images/icons.png) 0 0 no-repeat;
+            background-size: 264px 88px;
+            width: 44px;
+            height: 44px;
+            position: relative;
+            cursor: pointer;
+            overflow: visible;
+            -webkit-appearance: none;
+            display: block;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            float: right;
+            opacity: 0.75;
+            transition: opacity 0.2s;
+            box-shadow: none;
+            
+            &:hover {
+                opacity: 1;
+            }
+
+            &.arrow-close {
+                background: url(../../images/icons.png) 0 0 no-repeat;
+                background-position: 0 -44px;
+            }
+        }
+    }
+    
+    .wrap-list {
+        padding: 20px 0;
+    }
+    
+    .footer {
+        display: flex;
+        justify-content: center;
+        background: #fff;
+        color: #fff;
+        height: 44px;
+        line-height: 44px;
+        text-align: center;
+    }
+}

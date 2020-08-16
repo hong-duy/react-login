@@ -1,22 +1,5 @@
 import React from "react";
 
-
-// Modules object for setting up the Quill editor
-export const modules = {
-    toolbar: {
-        container: "#toolbar",
-        handlers: {
-            undo: undoChange,
-            redo: redoChange
-        }
-    },
-    history: {
-        delay: 500,
-        maxStack: 100,
-        userOnly: true
-    }
-};
-
 const CustomUndo = () => (
     <svg viewBox="0 0 18 18">
         <polygon className="ql-fill ql-stroke" points="6 10 4 12 2 10 6 10" />
@@ -38,12 +21,13 @@ const CustomRedo = () => (
     </svg>
 );
 
-function undoChange(this: any) {
-    this.quill.history.undo();
-}
-function redoChange(this: any) {
-    this.quill.history.redo();
-}
+const CustomImage = () => (
+    <svg viewBox="0 0 18 18"> <rect className="ql-stroke" height="10" width="12" x="3" y="4"></rect>
+        <circle className="ql-fill" cx="6" cy="7" r="1"></circle>
+        <polyline className="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12"></polyline>
+    </svg>
+)
+
 
 // Quill Toolbar component
 export const Toolbar = () => (
@@ -57,7 +41,7 @@ export const Toolbar = () => (
                 <option value="helvetica">Helvetica</option>
                 <option value="lucida">Lucida</option>
             </select>
-            <select className="ql-size" defaultValue="medium">
+            <select className="ql-size" defaultValue="12px">
                 <option value="12px">12 px</option>
                 <option value="13px">13 px</option>
                 <option value="14px">14 px</option>
@@ -68,7 +52,7 @@ export const Toolbar = () => (
                 <option value="19px">19 px</option>
                 <option value="20px">20 px</option>
             </select>
-            <select className="ql-header" defaultValue="3">
+            <select className="ql-header" defaultValue="1">
                 <option value="1">Heading</option>
                 <option value="2">Subheading</option>
                 <option value="3">Normal</option>
@@ -93,13 +77,15 @@ export const Toolbar = () => (
             <button className="ql-direction" />
         </span>
         <span className="ql-formats">
-            <select className="ql-align" />
+            {/* <select className="ql-align" /> */}
             <select className="ql-color" />
             <select className="ql-background" />
         </span>
         <span className="ql-formats">
             <button className="ql-link" />
-            <button className="ql-image" />
+            <button className="ql-images">
+                <CustomImage />
+            </button>
             <button className="ql-video" />
         </span>
         <span className="ql-formats">

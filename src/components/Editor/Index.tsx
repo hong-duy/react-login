@@ -1,37 +1,127 @@
-import React, { useState } from "react";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import Toolbar, { modules } from "./Toolbar";
+import 'react-quill/dist/quill.snow.css'
+import '../Images/Index.scss'
+import React, { useState } from "react"
+import ReactQuill from 'react-quill'
+import Toolbar from "./Toolbar"
+import CONFIG from "../../configs/config"
+import { getList } from '../../api/HandleRequest'
+import RSC from "react-scrollbars-custom"
+import Loading from '../Loading/Loading'
+import Pagination from '@material-ui/lab/Pagination'
+import ImageList from '../Images/ImageList';
+
+interface Provider {
+  id: number;
+  thumbnail: string;
+  media_title: string;
+  views: number;
+  published_at: string;
+  description: string;
+  slug: string
+}
 
 export default function Editor() {
-  const [value, setValue] = useState('');
+  const [value] = useState('')
+  const [isDispayPopup, setIsDispayPopup] = useState(false)
+  const [height] = useState(window.innerHeight)
+  const [images, setImages] = useState<Provider[]>([])
+  const [isLoading, setLoading] = useState(true)
+  const [totalPage, setTotalPage] = useState(0)
+  const [page, setPage] = useState(0)
 
-  const handleChange = (value: any) => {
-    setValue(value);
+
+  const handleChange = (content: any, delta: any, source: any, editor: any) => {
+    // console.log(editor.getHTML()); // rich text
+    // console.log(editor.getText()); // plain text
+    // console.log(editor.getLength()); // number of characters
   }
-  // async function handleImage() {
-  //   console.log('image');
-  // }
+
+  async function handleImageList() {
+    setLoading(true);
+    setIsDispayPopup(true);
+    getImages();
+  }
+
+  async function getImages() {
+    const res = await getList(CONFIG.API_IMAGE)
+    setImages(res.result.data)
+    setTotalPage(res.result.meta.total_pages);
+    setLoading(false)
+  }
+
+  function undoChange(this: any) {
+    this.quill.history.undo()
+  }
+
+  function redoChange(this: any) {
+    this.quill.history.redo()
+  }
+
+  const modules = {
+    toolbar: {
+      container: "#toolbar",
+      handlers: {
+        undo: undoChange,
+        redo: redoChange,
+        images: handleImageList
+      }
+    },
+    history: {
+      delay: 500,
+      maxStack: 100,
+      userOnly: true
+    }
+  };
 
 
-  // const formats = [
-  //   'header',
-  //   'bold', 'italic', 'underline', 'strike', 'blockquote',
-  //   'list', 'bullet', 'indent',
-  //   'link', 'image'
-  // ]
+  function handleClose() {
+    setIsDispayPopup(false)
+  }
+
+  function handleTest(item: any) {
+    console.log(item)
+  }
+
+  function displayItem() {
+    if (isLoading) {
+      return <Loading totalItem={6} col={4} clsName="d-flex flex-wrap wrap-list" />
+    }
+
+    return <ImageList items={images} onChange={handleTest} clsName="d-flex flex-wrap wrap-list"/>
+  }
 
   return (
+
     <div className="container">
       <Toolbar />
       <ReactQuill
         theme="snow"
-        value={value}
+        value={value || ''}
         onChange={handleChange}
         placeholder={"Write something awesome..."}
         modules={modules}
-        // formats={formats}
       />
+      {
+        isDispayPopup &&
+        <div className="image-manager">
+          <div className="container">
+            <div className="box">
+              <header className="header">
+                <button className="arrow arrow-close" onClick={handleClose} />
+                <button className="arrow arrow-expand" />
+              </header>
+              <RSC noScrollX={true} style={{ height: height - 230 }}>
+                <div className="d-flex flex-wrap wrap-list">
+                  { displayItem()}
+                </div>
+              </RSC>
+              <footer className="footer">
+                <Pagination count={totalPage} page={page} boundaryCount={4} onChange={(_event, value) => setPage(value)} showFirstButton showLastButton />
+              </footer>
+            </div>
+          </div>
+        </div>
+      }
     </div>
-  );
+  )
 }

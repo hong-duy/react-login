@@ -6,10 +6,10 @@ import EditorToolbar, { modules } from "./EditorToolbar";
 
 
 export default function EditorCustom() {
-  const [value, setValue] = useState('');
+  const [value] = useState('');
 
   const handleChange = (value: any) => {
-    setValue('test');
+    // setValue('test');
   }
 
   return (

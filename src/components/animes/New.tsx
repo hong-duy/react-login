@@ -16,14 +16,15 @@ interface Provider {
 }
 
 export default function New() {
-	let [items, setItems] = useState<Provider[]>([]);
+	const [items, setItems] = useState<Provider[]>([]);
 	const [offset, setOffset] = useState(0);
 	const [isLoading, setLoading] = useState(false);
 
 	useEffect(() => {
 		async function fetchAnime() {
-			const res = await getList(CONFIG.API_NEWS, 8, offset);
-			setItems(prevAnimes => [...prevAnimes, ...res.result]);
+			// const res = await getList(CONFIG.API_NEWS, 8, offset);
+			const res = await getList(CONFIG.API_IMAGE, 8, offset);
+			setItems(prevAnimes => [...prevAnimes, ...res.result.data]);
 			setLoading(false);
 		}
 
@@ -38,11 +39,11 @@ export default function New() {
 	return (
 		<>
 			<div className="container">
-				<div className="list-items">
+				<div className="row">
 					{
 						items.map((item: Provider, i: number) =>
-							<div className="wrap-item" key={i}>
-								<div className="item">
+							<div className="col-3" key={i}>
+								<div className="item" style={{ position: 'relative'}}>
 									<div className="item-thumbnail">
 										<a href={item.slug}>
 											<img src={item.thumbnail} alt={item.title} />
