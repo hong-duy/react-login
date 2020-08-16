@@ -7,7 +7,7 @@ const pixelRatio = 4;
 
 // We resize the canvas down when saving on retina devices otherwise the image
 // will be double or triple the preview size.
-function getResizedCanvas(canvas: any, newWidth: number, newHeight: number) {
+function getResizedCanvas(canvas: HTMLCanvasElement, newWidth: number, newHeight: number) {
   const tmpCanvas = document.createElement("canvas");
   tmpCanvas.width = newWidth;
   tmpCanvas.height = newHeight;
@@ -51,19 +51,11 @@ function generateDownload(previewCanvas: any, crop: any) {
   );
 }
 
-interface Crop {
-  aspect?: number;
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  unit?: 'px' | '%';
-}
 export default function ImageCrop() {
   const [upImg, setUpImg] = useState('');
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
-  const [crop, setCrop] = useState({ unit: "%", aspect: 16 / 9, width: 200, height: 200, x: 0, y: 0 });
+  const [crop, setCrop] = useState({ aspect: 16/9, x: 0, y:0, unit: "%", width: 50 } as ReactCrop.Crop);
 
   const [completedCrop, setCompletedCrop] = useState({ width: 1, height: 1});
 
@@ -86,7 +78,7 @@ export default function ImageCrop() {
 
     const image: any = imgRef.current;
     const canvas: any = previewCanvasRef.current;
-    const crop: Crop = completedCrop;
+    const crop: ReactCrop.Crop = completedCrop;
 
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
@@ -108,7 +100,7 @@ export default function ImageCrop() {
       0,
       crop.width,
       crop.height
-    ) as Crop;
+    );
   }, [completedCrop]);
 
   return (

@@ -31,7 +31,7 @@ export default function Editor() {
   const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(0)
   const [activeTab, setActiveTab] = useState(1);
- 
+
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
     // console.log(editor.getHTML()); // rich text
@@ -43,9 +43,9 @@ export default function Editor() {
     setLoading(true);
     async function getImages() {
       const res = await getList(CONFIG.API_IMAGE, page)
-      setLoading(false)
       setImages(res.result.data)
       setTotalPage(res.result.meta.total_pages);
+      setLoading(false)
     }
     if (isDispayPopup) {
       getImages()
@@ -115,13 +115,13 @@ export default function Editor() {
           <div className="container">
             <div className="box">
               <header className="header">
-                <button className={`btn btn-list ${activeTab === 1 ? 'active': ''}`} onClick={() => handleActiveTab(1)}><FontAwesomeIcon icon={faThList} size="lg" /></button>
-                <button className={`btn btn-upload ${activeTab === 2 ? 'active': ''}`} onClick={() => handleActiveTab(2)}><FontAwesomeIcon icon={faCloudUploadAlt} /></button>
+                <button className={`btn btn-list ${activeTab === 1 ? 'active' : ''}`} onClick={() => handleActiveTab(1)}><FontAwesomeIcon icon={faThList} size="lg" /></button>
+                <button className={`btn btn-upload ${activeTab === 2 ? 'active' : ''}`} onClick={() => handleActiveTab(2)}><FontAwesomeIcon icon={faCloudUploadAlt} /></button>
                 <button className="btn arrow arrow-close" onClick={handleClose} />
                 <button className="btn arrow arrow-expand" />
               </header>
               <RSC noScrollX={true} style={{ height: height - 230 }}>
-                  {displayItem()}
+                {displayItem()}
               </RSC>
               <footer className="footer">
                 <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />
