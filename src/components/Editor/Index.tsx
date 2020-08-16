@@ -9,6 +9,8 @@ import RSC from "react-scrollbars-custom"
 import Loading from '../Loading/Loading'
 import Pagination from '@material-ui/lab/Pagination'
 import ImageList from '../Images/ImageList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThList, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
 
 interface Provider {
   id: number;
@@ -28,6 +30,8 @@ export default function Editor() {
   const [isLoading, setLoading] = useState(true)
   const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(0)
+  const [activeTab, setActiveTab] = useState(1);
+ 
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
     // console.log(editor.getHTML()); // rich text
@@ -36,12 +40,12 @@ export default function Editor() {
   }
 
   useEffect(() => {
+    setLoading(true);
     async function getImages() {
-      setLoading(true);
       const res = await getList(CONFIG.API_IMAGE, page)
+      setLoading(false)
       setImages(res.result.data)
       setTotalPage(res.result.meta.total_pages);
-      setLoading(false)
     }
     if (isDispayPopup) {
       getImages()
@@ -82,14 +86,20 @@ export default function Editor() {
       return <Loading totalItem={6} col={4} clsName="d-flex flex-wrap wrap-list" />
     }
 
-    return <ImageList items={images} onChange={handleTest} clsName="d-flex flex-wrap wrap-list" />
+    return <ImageList items={images} onChange={handleTest} prefixUrl={CONFIG.IMAGE_URL} clsName="d-flex flex-wrap wrap-list" />
   }
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  return (
 
+  function handleActiveTab(key: number) {
+    if (key !== activeTab) {
+      setActiveTab(key)
+    }
+  }
+
+  return (
     <div className="container">
       <Toolbar />
       <ReactQuill
@@ -105,8 +115,10 @@ export default function Editor() {
           <div className="container">
             <div className="box">
               <header className="header">
-                <button className="arrow arrow-close" onClick={handleClose} />
-                <button className="arrow arrow-expand" />
+                <button className={`btn btn-list ${activeTab === 1 ? 'active': ''}`} onClick={() => handleActiveTab(1)}><FontAwesomeIcon icon={faThList} size="lg" /></button>
+                <button className={`btn btn-upload ${activeTab === 2 ? 'active': ''}`} onClick={() => handleActiveTab(2)}><FontAwesomeIcon icon={faCloudUploadAlt} /></button>
+                <button className="btn arrow arrow-close" onClick={handleClose} />
+                <button className="btn arrow arrow-expand" />
               </header>
               <RSC noScrollX={true} style={{ height: height - 230 }}>
                   {displayItem()}

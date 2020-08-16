@@ -4,6 +4,8 @@ export interface UseImageProp {
    * Custom
    */
   clsName?: string;
+
+  prefixUrl?: string;
   /**
    * Callback fired when selected item
    *

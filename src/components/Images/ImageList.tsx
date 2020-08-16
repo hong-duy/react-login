@@ -3,7 +3,7 @@ import { UseImageProp } from './ImageInterface'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
-export default function ImageList({ items, clsName, onChange }: UseImageProp) {
+export default function ImageList({ items, clsName, prefixUrl ,onChange }: UseImageProp) {
 
   const handleChange = onChange;
 
@@ -23,7 +23,7 @@ export default function ImageList({ items, clsName, onChange }: UseImageProp) {
             <div className="single-item inner-box">
               <figure className="image-box">
                 <picture>
-                  <img className="img-fluid" src="//www.ansonika.com/countryholidays/boxed/img/room_list_2.jpg" alt="" />
+                  <img className="img-fluid" src={`${prefixUrl}${item.media_url}`} alt="" />
                 </picture>
                 <div className="time">
                   <span>Ngày tạo: </span>

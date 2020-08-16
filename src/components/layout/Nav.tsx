@@ -32,8 +32,8 @@ export default function Nav() {
           <li><Link to='/form' className="item">Form</Link></li>
           <li><Link to='/form-two' className="item">Editor customize</Link></li>
           <li><Link to='/form-three' className="item">Editor normal</Link></li>
-          <li><Link to='/tin-tuc-anime' className="item">Tin tức anime</Link></li>
-          <li><Link to='/nhan-vat' className="item">Nhân vật</Link></li>
+          <li><Link to='/crop-image' className="item">Crop image</Link></li>
+    
           {
             state.isAuthenticated || isAuthenticated ?
               <li className="login"><button onClick={() => dispatch({ type: "LOGOUT" })}><img src={user.profile_url} alt=""/></button></li> :

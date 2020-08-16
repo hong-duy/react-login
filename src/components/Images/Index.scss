@@ -1,4 +1,5 @@
 $grayColor: #9b9fa6;
+$whiteColor: #fff;
 
 .overlay-box {
     position: absolute;
@@ -154,11 +155,9 @@ figure {
         height: 44px;
         background: #000000;
 
-        .arrow {
-            background: url(../../images/icons.png) 0 0 no-repeat;
-            background-size: 264px 88px;
-            width: 44px;
+        .btn {
             height: 44px;
+            width: 44px;
             position: relative;
             cursor: pointer;
             overflow: visible;
@@ -167,11 +166,33 @@ figure {
             border: 0;
             padding: 0;
             margin: 0;
-            float: right;
             opacity: 0.75;
             transition: opacity 0.2s;
             box-shadow: none;
-            
+            border-radius: 0;
+        }
+        
+        .btn-list, .btn-upload {
+            float: left;
+            width: 150px;
+            color: $grayColor;
+
+            &.active {
+                color: $whiteColor;
+                opacity: 1;
+                background: #ff4d00;
+            }
+
+            &:hover {
+                color: $whiteColor;
+            }
+        }
+
+        .arrow {
+            float: right;
+            background: url(../../images/icons.png) 0 0 no-repeat;
+            background-size: 264px 88px;
+              
             &:hover {
                 opacity: 1;
             }

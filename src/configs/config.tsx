@@ -1,5 +1,6 @@
 const CONFIG = {
     GOOGLE_CLIENT_ID: '650068002981-iivventkbtgnqjfl1cso0vs2upvkkt9t.apps.googleusercontent.com',
+    IMAGE_URL: 'https://storage.googleapis.com/duy-bucket/',
     API_POST: 'https://tinanime.com/api/news/?offset=12&limit=10',
     API_AUTH_CALLBACK: '/api/authentication',
     API_NEWS: 'https://tinanime.com/api/news/',

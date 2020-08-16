@@ -52,3 +52,4 @@ http://php7.commonsupport.com/opt/panola/rooms/small-room/
 http://php7.commonsupport.com/opt/panola/rooms-grid-view/
 http://www.2035themes.com/luxen/index.html
 http://www.ansonika.com/countryholidays/rooms_list.html
+http://www.nicdarkthemes.com/themes/hotel/wp/demo/chalet-wordpress-theme/
