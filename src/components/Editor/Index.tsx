@@ -11,6 +11,7 @@ import Pagination from '@material-ui/lab/Pagination'
 import ImageList from '../Images/ImageList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThList, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
+import ImageCrop from '../Images/ImageCrop'
 
 interface Provider {
   id: number;
@@ -24,13 +25,13 @@ interface Provider {
 
 export default function Editor() {
   const [value] = useState('')
-  const [isDispayPopup, setIsDispayPopup] = useState(false)
-  const [height] = useState(window.innerHeight)
+  const [isDispayPopup, setIsDispayPopup] = useState(true)
+  const [innerHeight] = useState(window.innerHeight - 230)
   const [images, setImages] = useState<Provider[]>([])
   const [isLoading, setLoading] = useState(true)
   const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(0)
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(2);
 
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
@@ -120,11 +121,19 @@ export default function Editor() {
                 <button className="btn arrow arrow-close" onClick={handleClose} />
                 <button className="btn arrow arrow-expand" />
               </header>
-              <RSC noScrollX={true} style={{ height: height - 230 }}>
-                {displayItem()}
-              </RSC>
+              {
+                  activeTab === 1 ?
+                  <RSC noScrollX={true} style={{ height: innerHeight }}>
+                    {displayItem()}
+                  </RSC> : 
+                  <div style={{ height: innerHeight}}>
+                    <ImageCrop />
+                  </div>
+                }
               <footer className="footer">
-                <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />
+                {
+                   activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />
+                }
               </footer>
             </div>
           </div>
