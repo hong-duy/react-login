@@ -23,15 +23,37 @@ interface Provider {
   slug: string
 }
 
+interface Size {
+  id: number;
+  x?: number;
+  y?: number;
+  selected: boolean;
+  title?: string;
+}
+
+const sizeList = [
+  {id: 1, x: 200, y: 400, selected: false, title: "200x200"},
+  {id: 2, x: 200, y: 400, selected: false, title: "200x200"},
+  {id: 3, x: 200, y: 400, selected: false, title: "200x400"},
+  {id: 4, x: 200, y: 400, selected: false, title: "200x500"},
+  {id: 5, x: 200, y: 400, selected: false, title: "200x600"},
+  {id: 6, x: 200, y: 400, selected: false, title: "200x600"},
+  {id: 6, x: 200, y: 400, selected: false, title: "200x700"},
+  {id: 7, x: 200, y: 400, selected: false, title: "200x800"},
+  {id: 9, x: 200, y: 400, selected: false, title: "200x700"},
+] as Size[];
+
 export default function Editor() {
   const [value] = useState('')
   const [isDispayPopup, setIsDispayPopup] = useState(true)
-  const [innerHeight] = useState(window.innerHeight - 230)
+  const [innerHeight] = useState(window.innerHeight - 200)
   const [images, setImages] = useState<Provider[]>([])
   const [isLoading, setLoading] = useState(true)
   const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(0)
   const [activeTab, setActiveTab] = useState(2);
+  const [size, setSize] = useState(0)
+  const [sizes] = useState(sizeList);
 
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
@@ -121,18 +143,24 @@ export default function Editor() {
                 <button className="btn arrow arrow-close" onClick={handleClose} />
                 <button className="btn arrow arrow-expand" />
               </header>
+              
               {
-                  activeTab === 1 ?
+                activeTab === 1 ?
                   <RSC noScrollX={true} style={{ height: innerHeight }}>
                     {displayItem()}
-                  </RSC> : 
-                  <div style={{ height: innerHeight}}>
+                  </RSC> :
+                  <div style={{ height: innerHeight }}>
+                    <div className="d-flex flex-wrap size">
+                      {
+                        sizes.map((item: Size, idx: number) =>  <span key={idx} onClick={() => console.log(item.id, item.x, item.y)} className="item active">{item.title}</span>)
+                      }
+                    </div>
                     <ImageCrop />
                   </div>
-                }
+              }
               <footer className="footer">
                 {
-                   activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />
+                  activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />
                 }
               </footer>
             </div>

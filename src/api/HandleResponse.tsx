@@ -25,6 +25,11 @@ export default async function HandleResponse(res: Response) {
         message = await res.json();
     }
 
+    if (!res.ok && res.status === 404) {
+        isError = true;
+        message = res.statusText;
+    }
+
     if (!res.ok && res.status === 500) {
         isError = true;
         message = res.statusText;

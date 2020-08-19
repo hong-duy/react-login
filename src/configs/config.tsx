@@ -7,6 +7,13 @@ const CONFIG = {
     API_IMAGE: '/api/v1/images',
     API_REFRESH_TOKEN: 'api/refresh-token',
     API_POST_TEST: '/api/v1/posts',
+    API_UPLOAD: '/medias/store'
 }
 
 export default CONFIG;
+
+export const SETTING = {
+    ACCEPTED_FILE_TYPES: 'image/png, image/jpg, image/jpeg', //, image/jpg, image/jpeg
+    MAX_SIZE: 3000000, // 3MB = 3000000,
+    MAX_TOTAL_FILE: 10
+}

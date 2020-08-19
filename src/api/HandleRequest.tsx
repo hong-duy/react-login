@@ -171,3 +171,23 @@ export const Destroy = async (url: string, id: string) => {
 
     return HandleResponse(result);
 }
+
+
+/**
+ * Function store data
+ * @method POST
+ * @param url 
+ * @param model 
+ * @return HandleResponse
+ */
+export const UploadFile = async (url: string, formData: any) => {
+    const result = await fetch(`${url}`, {
+        method: "POST",
+        headers: {
+            Accept: "application/x-www-form-urlencoded, multipart/form-data"
+        },
+        body: formData
+    });
+
+    return HandleResponse(result);
+};
