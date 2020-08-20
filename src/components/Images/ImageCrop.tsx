@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import Dropzone, { FileRejection } from 'react-dropzone'
 import ReactCrop from "react-image-crop"
 import RSC from "react-scrollbars-custom"
@@ -13,77 +13,77 @@ const pixelRatio = 4;
 
 // We resize the canvas down when saving on retina devices otherwise the image
 // will be double or triple the preview size.
-function getResizedCanvas(canvas: HTMLCanvasElement, newWidth: number, newHeight: number) {
-  const tmpCanvas = document.createElement("canvas");
-  tmpCanvas.width = newWidth;
-  tmpCanvas.height = newHeight;
+// function getResizedCanvas(canvas: HTMLCanvasElement, newWidth: number, newHeight: number) {
+//   const tmpCanvas = document.createElement("canvas");
+//   tmpCanvas.width = newWidth;
+//   tmpCanvas.height = newHeight;
 
-  const ctx: any = tmpCanvas.getContext("2d");
-  ctx.drawImage(
-    canvas,
-    0,
-    0,
-    canvas.width,
-    canvas.height,
-    0,
-    0,
-    newWidth,
-    newHeight
-  );
+//   const ctx: any = tmpCanvas.getContext("2d");
+//   ctx.drawImage(
+//     canvas,
+//     0,
+//     0,
+//     canvas.width,
+//     canvas.height,
+//     0,
+//     0,
+//     newWidth,
+//     newHeight
+//   );
 
-  return tmpCanvas;
-}
+//   return tmpCanvas;
+// }
 
-function generateDownload(previewCanvas: any, crop: any) {
-  if (!crop || !previewCanvas) {
-    return;
-  }
+// function generateDownload(previewCanvas: any, crop: any) {
+//   if (!crop || !previewCanvas) {
+//     return;
+//   }
 
-  const canvas = getResizedCanvas(previewCanvas, crop.width, crop.height);
+//   const canvas = getResizedCanvas(previewCanvas, crop.width, crop.height);
 
-  canvas.toBlob(
-    blob => {
-      const previewUrl = window.URL.createObjectURL(blob);
+//   canvas.toBlob(
+//     blob => {
+//       const previewUrl = window.URL.createObjectURL(blob);
 
-      const anchor = document.createElement("a");
-      anchor.download = "cropPreview.png";
-      anchor.href = URL.createObjectURL(blob);
-      anchor.click();
+//       const anchor = document.createElement("a");
+//       anchor.download = "cropPreview.png";
+//       anchor.href = URL.createObjectURL(blob);
+//       anchor.click();
 
-      window.URL.revokeObjectURL(previewUrl);
-    },
-    "image/png",
-    1
-  );
-}
+//       window.URL.revokeObjectURL(previewUrl);
+//     },
+//     "image/png",
+//     1
+//   );
+// }
 
 export default function ImageCrop() {
   const [innerHeight] = useState(window.innerHeight - 230)
-  const [upImg, setUpImg] = useState('');
+  // const [upImg, setUpImg] = useState('');
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
-  const [multipleFile, setMultipleFile] = useState(true);
-  const [crop, setCrop] = useState({ aspect: 16 / 9, x: 0, y: 0, unit: "%", width: 50 } as ReactCrop.Crop);
-  const [completedCrop, setCompletedCrop] = useState({ width: 1, height: 1 });
-  const [isCrop, setIsCrop] = useState(false);
+  const [multipleFile] = useState(true);
+  // const [crop, setCrop] = useState({ aspect: 16 / 9, x: 0, y: 0, unit: "%", width: 50 } as ReactCrop.Crop);
+  const [completedCrop] = useState({ width: 1, height: 1 });
+  // const [isCrop, setIsCrop] = useState(false);
   const [acceptedFiles, setAcceptedFiles] = useState<any>([])
   const [rejectFiles, setRejectFiles] = useState<any>([])
   const [saving, setSaving] = useState(false);
-  const [selectedCrop, setSelectedCrop] = useState(0);
+  const [selectedCrop] = useState(0);
   const [error, setError] = useState('');
   // const test = useVeriyFile()
 
-  const onSelectFile = (e: any) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const reader: any = new FileReader();
-      reader.addEventListener("load", () => setUpImg(reader.result));
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
+  // const onSelectFile = (e: any) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     const reader: any = new FileReader();
+  //     reader.addEventListener("load", () => setUpImg(reader.result));
+  //     reader.readAsDataURL(e.target.files[0]);
+  //   }
+  // };
 
-  const onLoad = useCallback(img => {
-    imgRef.current = img;
-  }, []);
+  // const onLoad = useCallback(img => {
+  //   imgRef.current = img;
+  // }, []);
 
   useEffect(() => {
     if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
@@ -125,7 +125,7 @@ export default function ImageCrop() {
     let dataFile = new FormData();
     acceptedFiles.map((file: any) => {
       file.media_size = 1;
-      dataFile.append('files[]', file);
+      return dataFile.append('files[]', file);
     });
 
     dataFile.append('media_size', selectedCrop as any);
@@ -144,7 +144,7 @@ export default function ImageCrop() {
     if (acceptedFiles.length > 0) {
       upload();
     }
-  }, [acceptedFiles])
+  }, [acceptedFiles, selectedCrop])
 
   function renderDrop() {
     if (saving) {

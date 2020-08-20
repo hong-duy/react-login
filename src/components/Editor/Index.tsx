@@ -12,6 +12,7 @@ import ImageList from '../Images/ImageList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThList, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
 import ImageCrop from '../Images/ImageCrop'
+import SizeList from '../Size/SizeList'
 
 interface Provider {
   id: number;
@@ -23,26 +24,6 @@ interface Provider {
   slug: string
 }
 
-interface Size {
-  id: number;
-  x?: number;
-  y?: number;
-  selected: boolean;
-  title?: string;
-}
-
-const sizeList = [
-  {id: 1, x: 200, y: 400, selected: false, title: "200x200"},
-  {id: 2, x: 200, y: 400, selected: false, title: "200x200"},
-  {id: 3, x: 200, y: 400, selected: false, title: "200x400"},
-  {id: 4, x: 200, y: 400, selected: false, title: "200x500"},
-  {id: 5, x: 200, y: 400, selected: false, title: "200x600"},
-  {id: 6, x: 200, y: 400, selected: false, title: "200x600"},
-  {id: 6, x: 200, y: 400, selected: false, title: "200x700"},
-  {id: 7, x: 200, y: 400, selected: false, title: "200x800"},
-  {id: 9, x: 200, y: 400, selected: false, title: "200x700"},
-] as Size[];
-
 export default function Editor() {
   const [value] = useState('')
   const [isDispayPopup, setIsDispayPopup] = useState(true)
@@ -52,9 +33,6 @@ export default function Editor() {
   const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(0)
   const [activeTab, setActiveTab] = useState(2);
-  const [size, setSize] = useState(0)
-  const [sizes] = useState(sizeList);
-
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
     // console.log(editor.getHTML()); // rich text
@@ -65,7 +43,7 @@ export default function Editor() {
   useEffect(() => {
     setLoading(true);
     async function getImages() {
-      const res = await getList(CONFIG.API_IMAGE, page)
+      const res = await getList(CONFIG.API_IMAGE.LIST, page)
       setImages(res.result.data)
       setTotalPage(res.result.meta.total_pages);
       setLoading(false)
@@ -74,7 +52,6 @@ export default function Editor() {
       getImages()
     }
   }, [page, isDispayPopup])
-
 
   async function handleImageList() {
     setIsDispayPopup(true);
@@ -143,18 +120,14 @@ export default function Editor() {
                 <button className="btn arrow arrow-close" onClick={handleClose} />
                 <button className="btn arrow arrow-expand" />
               </header>
-              
+
               {
                 activeTab === 1 ?
                   <RSC noScrollX={true} style={{ height: innerHeight }}>
                     {displayItem()}
                   </RSC> :
                   <div style={{ height: innerHeight }}>
-                    <div className="d-flex flex-wrap size">
-                      {
-                        sizes.map((item: Size, idx: number) =>  <span key={idx} onClick={() => console.log(item.id, item.x, item.y)} className="item active">{item.title}</span>)
-                      }
-                    </div>
+                    <SizeList actived={activeTab} onChange={(item) => console.log(item)} />
                     <ImageCrop />
                   </div>
               }

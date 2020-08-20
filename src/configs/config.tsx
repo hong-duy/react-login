@@ -3,11 +3,16 @@ const CONFIG = {
     IMAGE_URL: 'https://storage.googleapis.com/duy-bucket/',
     API_POST: 'https://tinanime.com/api/news/?offset=12&limit=10',
     API_AUTH_CALLBACK: '/api/authentication',
-    API_NEWS: 'https://tinanime.com/api/news/',
-    API_IMAGE: '/api/v1/images',
     API_REFRESH_TOKEN: 'api/refresh-token',
     API_POST_TEST: '/api/v1/posts',
-    API_UPLOAD: '/medias/store'
+    API_UPLOAD: '/medias/store',
+    API_NEWS: 'https://tinanime.com/api/news/',
+    API_IMAGE: {
+        LIST: '/api/v1/images'
+    },
+    API_SIZE: {
+        LIST: '/api/v1/sizes'
+    }
 }
 
 export default CONFIG;

@@ -23,7 +23,7 @@ export default function New() {
 	useEffect(() => {
 		async function fetchAnime() {
 			// const res = await getList(CONFIG.API_NEWS, 8, offset);
-			const res = await getList(CONFIG.API_IMAGE, 8, offset);
+			const res = await getList(CONFIG.API_IMAGE.LIST, 8, offset);
 			setItems(prevAnimes => [...prevAnimes, ...res.result.data]);
 			setLoading(false);
 		}

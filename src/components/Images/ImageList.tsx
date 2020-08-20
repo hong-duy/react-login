@@ -3,13 +3,10 @@ import { UseImageProp } from './ImageInterface'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
-export default function ImageList({ items, clsName, prefixUrl ,onChange }: UseImageProp) {
-
-  const handleChange = onChange;
-
+export default function ImageList({ items, clsName, prefixUrl, onChange }: UseImageProp) {
   function handleSelect(event: React.ChangeEvent<unknown>, item: any) {
-    if (handleChange) {
-      handleChange(item, event)
+    if (onChange) {
+      onChange(item, event)
     }
   }
 
