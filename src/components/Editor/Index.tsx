@@ -24,15 +24,35 @@ interface Provider {
   slug: string
 }
 
-export default function Editor() {
-  const [value] = useState('')
-  const [isDispayPopup, setIsDispayPopup] = useState(true)
-  const [innerHeight] = useState(window.innerHeight - 200)
+function useImages(showPopup: boolean, activeTab: number) {
   const [images, setImages] = useState<Provider[]>([])
-  const [isLoading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(0)
+  
+  useEffect(() => {
+    async function getImages() {
+      setIsLoading(true);
+      const res = await getList(CONFIG.API_IMAGE.LIST, page)
+      setImages(res.result.data)
+      setTotalPage(res.result.meta.total_pages);
+      setIsLoading(false)
+    }
+
+    if (showPopup && activeTab === 1) {
+      getImages()
+    }
+  }, [page, showPopup, activeTab])
+  
+  return [images, isLoading, totalPage, page, setPage];
+}
+
+export default function Editor() {
+  const [innerHeight] = useState(window.innerHeight - 200)
+  const [value] = useState('')
+  const [showPopup, setShowPopup] = useState(true)
   const [activeTab, setActiveTab] = useState(2);
+  const [images, isLoading, totalPage, page, setPage] = useImages(showPopup, activeTab) as [Provider[], boolean, number, number, React.Dispatch<React.SetStateAction<number>>];
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
     // console.log(editor.getHTML()); // rich text
@@ -40,21 +60,8 @@ export default function Editor() {
     // console.log(editor.getLength()); // number of characters
   }
 
-  useEffect(() => {
-    setLoading(true);
-    async function getImages() {
-      const res = await getList(CONFIG.API_IMAGE.LIST, page)
-      setImages(res.result.data)
-      setTotalPage(res.result.meta.total_pages);
-      setLoading(false)
-    }
-    if (isDispayPopup) {
-      getImages()
-    }
-  }, [page, isDispayPopup])
-
   async function handleImageList() {
-    setIsDispayPopup(true);
+    setShowPopup(true);
   }
 
   const modules = {
@@ -74,7 +81,7 @@ export default function Editor() {
   };
 
   function handleClose() {
-    setIsDispayPopup(false)
+    setShowPopup(false)
   }
 
   function handleTest(item: any) {
@@ -110,7 +117,7 @@ export default function Editor() {
         modules={modules}
       />
       {
-        isDispayPopup &&
+        showPopup &&
         <div className="image-manager">
           <div className="container">
             <div className="box">
@@ -120,7 +127,6 @@ export default function Editor() {
                 <button className="btn arrow arrow-close" onClick={handleClose} />
                 <button className="btn arrow arrow-expand" />
               </header>
-
               {
                 activeTab === 1 ?
                   <RSC noScrollX={true} style={{ height: innerHeight }}>
@@ -132,9 +138,7 @@ export default function Editor() {
                   </div>
               }
               <footer className="footer">
-                {
-                  activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />
-                }
+                { activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />}
               </footer>
             </div>
           </div>

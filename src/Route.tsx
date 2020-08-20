@@ -6,7 +6,7 @@ import Main from './components/layout/Main';
 import { getList, getToken } from './api/HandleRequest';
 import Form from './components/EditorCustom/Index';
 import EditorCustom from './components/EditorCustom/EditorCustom';
-import Editor from './components/Editor/Index';
+import Editor from './components/Editor/Index2';
 import ImageCrop from './components/Images/ImageCrop';
 
 function NoMatch() {

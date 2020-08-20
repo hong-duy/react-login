@@ -6,6 +6,7 @@ export function setHeader() {
     let options = {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        
     } as any;
 
     const token =  localStorage.getItem('token');
@@ -181,11 +182,18 @@ export const Destroy = async (url: string, id: string) => {
  * @return HandleResponse
  */
 export const UploadFile = async (url: string, formData: any) => {
+    let options = {
+        Accept: "application/x-www-form-urlencoded, multipart/form-data"  
+   } as any;
+
+   const token =  localStorage.getItem('token');
+   if (!isEmpty(token)) {
+       options.Authorization = `Bearer ${JSON.parse(localStorage.getItem('token')!)}`
+   }
+
     const result = await fetch(`${url}`, {
         method: "POST",
-        headers: {
-            Accept: "application/x-www-form-urlencoded, multipart/form-data"
-        },
+        headers: options,
         body: formData
     });
 

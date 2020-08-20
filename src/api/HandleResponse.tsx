@@ -1,6 +1,6 @@
 interface IHandleResponse {
     isError: boolean;
-    idValidate: boolean;
+    isValidate: boolean;
     message: any;
     result: any;
 }
@@ -12,7 +12,7 @@ interface IHandleResponse {
  */
 export default async function HandleResponse(res: Response) {
     let isError = false;
-    let idValidate = false;
+    let isValidate = false;
     let message = null;
     let result = null
 
@@ -21,7 +21,7 @@ export default async function HandleResponse(res: Response) {
     }
 
     if (!res.ok && res.status === 422) {
-        idValidate = true;
+        isValidate = true;
         message = await res.json();
     }
 
@@ -35,5 +35,5 @@ export default async function HandleResponse(res: Response) {
         message = res.statusText;
     }
 
-    return { isError, idValidate, message, result } as IHandleResponse;
+    return { isError, isValidate, message, result } as IHandleResponse;
 };

@@ -71,6 +71,7 @@ export default function ImageCrop() {
   const [saving, setSaving] = useState(false);
   const [selectedCrop] = useState(0);
   const [error, setError] = useState('');
+  const [validate, setValidate] = useState([])
   // const test = useVeriyFile()
 
   // const onSelectFile = (e: any) => {
@@ -130,15 +131,18 @@ export default function ImageCrop() {
 
     dataFile.append('media_size', selectedCrop as any);
 
-    console.log(dataFile);
-
     async function upload() {
       setSaving(true)
-      const response = await UploadFile(CONFIG.API_UPLOAD, dataFile);
-      if (response.isError) {
-        setError('Error when upload');
-        setSaving(false);
+      const res = await UploadFile(CONFIG.API_IMAGE.LIST, dataFile);
+      if (res.isError) {
+        setError(res.message); 
       }
+
+      if (res.isValidate) {
+        setValidate(res.message);
+      }
+
+      setSaving(false);
     }
 
     if (acceptedFiles.length > 0) {
@@ -193,6 +197,7 @@ export default function ImageCrop() {
     <>
       {renderDrop()}
       <div className="preview-image">
+        {validate && <div className="preview-header">{validate}</div>}
         {error && <div className="preview-header">{error}</div>}
         {
           rejectFiles.length > 0 &&
