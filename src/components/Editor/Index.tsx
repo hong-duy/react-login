@@ -51,7 +51,7 @@ export default function Editor() {
   const [innerHeight] = useState(window.innerHeight - 200)
   const [value] = useState('')
   const [showPopup, setShowPopup] = useState(true)
-  const [activeTab, setActiveTab] = useState(2);
+  const [activeTab, setActiveTab] = useState(1);
   const [images, isLoading, totalPage, page, setPage] = useImages(showPopup, activeTab) as [Provider[], boolean, number, number, React.Dispatch<React.SetStateAction<number>>];
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
