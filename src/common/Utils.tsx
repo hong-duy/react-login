@@ -53,11 +53,19 @@ export const showError = (clientError: any, errorInfo: any, key: string) => {
  * @return boolean
  */
 export const isEmpty = (value: any) => {
-  return (value === undefined || value === null || value === '');
+  return (value === 'undefined' || value === null || value === '');
 }
 
 export function sleep(ms: number) {
   return new Promise(
     resolve => setTimeout(resolve, ms)
   );
+}
+
+/**
+ * 
+ * @param value 
+ */
+export function isEmptyObject(value: any) {
+  return Object.keys(value).length === 0;
 }

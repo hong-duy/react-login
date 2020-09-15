@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useCallback } from "react"
 import Dropzone, { FileRejection } from 'react-dropzone'
 import ReactCrop from "react-image-crop"
 import RSC from "react-scrollbars-custom"
@@ -7,32 +7,35 @@ import '../Images/Upload.scss'
 import { SETTING } from "../../configs/config"
 import { UploadFile } from '../../api/HandleRequest';
 import CONFIG from "../../configs/config"
+import ImageList from "./ImageList"
+import { Size } from "../Size/SizeInterface"
+import { isEmptyObject } from "../../common/Utils"
 
 // Setting a high pixel ratio avoids blurriness in the canvas crop preview.
 const pixelRatio = 4;
 
 // We resize the canvas down when saving on retina devices otherwise the image
 // will be double or triple the preview size.
-// function getResizedCanvas(canvas: HTMLCanvasElement, newWidth: number, newHeight: number) {
-//   const tmpCanvas = document.createElement("canvas");
-//   tmpCanvas.width = newWidth;
-//   tmpCanvas.height = newHeight;
+function getResizedCanvas(canvas: HTMLCanvasElement, newWidth: number, newHeight: number) {
+  const tmpCanvas = document.createElement("canvas");
+  tmpCanvas.width = newWidth;
+  tmpCanvas.height = newHeight;
 
-//   const ctx: any = tmpCanvas.getContext("2d");
-//   ctx.drawImage(
-//     canvas,
-//     0,
-//     0,
-//     canvas.width,
-//     canvas.height,
-//     0,
-//     0,
-//     newWidth,
-//     newHeight
-//   );
+  const ctx: any = tmpCanvas.getContext("2d");
+  ctx.drawImage(
+    canvas,
+    0,
+    0,
+    canvas.width,
+    canvas.height,
+    0,
+    0,
+    newWidth,
+    newHeight
+  );
 
-//   return tmpCanvas;
-// }
+  return tmpCanvas;
+}
 
 // function generateDownload(previewCanvas: any, crop: any) {
 //   if (!crop || !previewCanvas) {
@@ -57,40 +60,33 @@ const pixelRatio = 4;
 //   );
 // }
 
-export default function ImageCrop() {
+export default function ImageCrop({ size }: { size?: Size }) {
+
   const [innerHeight] = useState(window.innerHeight - 230)
   // const [upImg, setUpImg] = useState('');
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
-  const [multipleFile] = useState(true);
-  // const [crop, setCrop] = useState({ aspect: 16 / 9, x: 0, y: 0, unit: "%", width: 50 } as ReactCrop.Crop);
-  const [completedCrop] = useState({ width: 1, height: 1 });
-  // const [isCrop, setIsCrop] = useState(false);
+  const [isMultipleFile, /*setIsMultipleFile*/] = useState(false);
+  const [crop, setCrop] = useState({ aspect: 16 / 9, x: 0, y: 0, unit: "%", width: 50, height: 50 } as ReactCrop.Crop);
+  const [completedCrop, setCompletedCrop] = useState({} as ReactCrop.Crop);
+  const [isCrop] = useState(size);
   const [acceptedFiles, setAcceptedFiles] = useState<any>([])
   const [rejectFiles, setRejectFiles] = useState<any>([])
   const [saving, setSaving] = useState(false);
   const [selectedCrop] = useState(0);
   const [error, setError] = useState('');
   const [validate, setValidate] = useState([])
-  // const test = useVeriyFile()
+  const [previewImages, setPreviewImages] = useState<any>([]);
+  const [upImg, setUpImg] = useState('');
 
-  // const onSelectFile = (e: any) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const reader: any = new FileReader();
-  //     reader.addEventListener("load", () => setUpImg(reader.result));
-  //     reader.readAsDataURL(e.target.files[0]);
-  //   }
-  // };
-
-  // const onLoad = useCallback(img => {
-  //   imgRef.current = img;
-  // }, []);
+  const onLoad = useCallback(img => {
+    imgRef.current = img;
+  }, []);
 
   useEffect(() => {
     if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
       return;
     }
-
     const image: any = imgRef.current;
     const canvas: any = previewCanvasRef.current;
     const crop: ReactCrop.Crop = completedCrop;
@@ -119,6 +115,15 @@ export default function ImageCrop() {
   }, [completedCrop]);
 
   useEffect(() => {
+    // only validate dimension of image when upload single file
+    if (acceptedFiles.length > 0 && isCrop) {
+      const currentFile = acceptedFiles[0];
+      const reader = new FileReader();
+      reader.addEventListener("load", () => setUpImg(reader.result as string));
+      reader.readAsDataURL(currentFile);
+      return;
+    }
+
     if (acceptedFiles.length > 2) {
       return console.log("Upload tối đa 10 file 1 lần")
     }
@@ -126,6 +131,7 @@ export default function ImageCrop() {
     let dataFile = new FormData();
     acceptedFiles.map((file: any) => {
       file.media_size = 1;
+      file.medial_title = "aaaaa";
       return dataFile.append('files[]', file);
     });
 
@@ -134,21 +140,42 @@ export default function ImageCrop() {
     async function upload() {
       setSaving(true)
       const res = await UploadFile(CONFIG.API_IMAGE.LIST, dataFile);
+      setSaving(false);
       if (res.isError) {
-        setError(res.message); 
+        return setError(res.message);
       }
 
       if (res.isValidate) {
-        setValidate(res.message);
+        return setValidate(res.message);
       }
 
-      setSaving(false);
+      setPreviewImages(res.result.data);
     }
 
     if (acceptedFiles.length > 0) {
       upload();
     }
-  }, [acceptedFiles, selectedCrop])
+  }, [acceptedFiles, selectedCrop, isCrop])
+
+  useEffect(() => {
+    const crop = {
+      aspect: 16 / 9,
+      x: 0,
+      y: 0,
+      unit: "px",
+      width: size?.width,
+      height: size?.height,
+    } as any;
+
+    if (size !== undefined && Object.keys(size).length > 0) {
+      setCrop(crop);
+    }
+
+  }, [size])
+
+  function handleChangeCrop(crop: ReactCrop.Crop) {
+    setCrop(crop);
+  }
 
   function renderDrop() {
     if (saving) {
@@ -168,12 +195,23 @@ export default function ImageCrop() {
       </div>
     }
 
+    if (upImg.length)
+      return <ReactCrop
+        className={'custom-css-react-crop'}
+        style={{ width: '50%', maxHeight: '400px' }}
+        src={upImg as any}
+        crop={crop as any}
+        onImageLoaded={onLoad}
+        onChange={handleChangeCrop}
+        onComplete={(c: any) => setCompletedCrop(c)}
+      />
+
     return <Dropzone
       onDropAccepted={files => setAcceptedFiles(files)}
       onDropRejected={files => setRejectFiles(files)}
       accept={SETTING.ACCEPTED_FILE_TYPES}
       maxSize={SETTING.MAX_SIZE}
-      multiple={multipleFile}
+      multiple={isMultipleFile}
     >
       {({ getRootProps, getInputProps }) => (
         <section className="d-flex flex-wrap box-dropzone">
@@ -196,8 +234,34 @@ export default function ImageCrop() {
   return (
     <>
       {renderDrop()}
+      {
+        crop &&
+        <div className="preview-image-option">
+          <div className="option-block">
+            <label>X:</label>
+            <span>{crop.x}</span>
+          </div>
+          <div className="option-block">
+            <label>Y:</label>
+            <span>{crop.y}</span>
+          </div>
+          <div className="option-block">
+            <label>W:</label>
+            <span>{Math.round(crop.width as number)}</span>
+
+          </div>
+          <div className="option-block">
+            <label>H:</label>
+            <span>{Math.round(crop.height as number)}</span>
+          </div>
+          <div className="option-block">
+            <label>U:</label>
+            <span>{crop.unit}</span>
+          </div>
+        </div>
+      }
       <div className="preview-image">
-        {validate && <div className="preview-header">{validate}</div>}
+        {validate.length > 0 && <div className="preview-header">{validate}</div>}
         {error && <div className="preview-header">{error}</div>}
         {
           rejectFiles.length > 0 &&
@@ -221,39 +285,31 @@ export default function ImageCrop() {
             </div>
           </>
         }
+        {
+          previewImages.length > 0 &&
+          <div className="box">
+            <RSC noScrollX={true} style={{ height: innerHeight - 300 }}>
+              <ImageList items={previewImages} prefixUrl={CONFIG.IMAGE_URL} clsName="d-flex flex-wrap wrap-list" />
+            </RSC>
+          </div>
+        }
+        {
+          previewCanvasRef &&
+          <div className="preview-header">
+            <div className="preview-canvas">
+              <RSC noScrollX={true} style={{ height: innerHeight - 450 }} className="scroll-canvas">
+                <canvas
+                  ref={previewCanvasRef}
+                  style={{
+                    width: completedCrop?.width ?? 0,
+                    height: completedCrop?.height ?? 0
+                  }}
+                />
+              </RSC>
+            </div>
+          </div>
+        }
       </div>
     </>
-
-    // <div className="box-dropzone">
-    //   <div className="dropzone" style={{ minHeight:  '100px'}}>
-    //     <input type="file" accept="image/png, image/jpg, image/jpeg" onChange={onSelectFile} multiple={true}/>
-    //     <p>Drag 'n' drop some files here, or click to select files</p>
-    //   </div>
-    //   <ReactCrop
-    //     src={upImg.toString()}
-    //     onImageLoaded={onLoad}
-    //     crop={crop}
-    //     onChange={(c: any) => setCrop(c)}
-    //     onComplete={(c: any) => setCompletedCrop(c)}
-    //   />
-    //   <div>
-    //     <canvas
-    //       ref={previewCanvasRef}
-    //       style={{
-    //         width: completedCrop?.width ?? 0,
-    //         height: completedCrop?.height ?? 0
-    //       }}
-    //     />
-    //   </div>
-    //   <button
-    //     type="button"
-    //     disabled={!completedCrop?.width || !completedCrop?.height}
-    //     onClick={() =>
-    //       generateDownload(previewCanvasRef.current, completedCrop)
-    //     }
-    //   >
-    //     Download cropped image
-    //   </button>
-    // </div>
   )
 }

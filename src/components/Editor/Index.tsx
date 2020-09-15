@@ -10,9 +10,11 @@ import Loading from '../Loading/Loading'
 import Pagination from '@material-ui/lab/Pagination'
 import ImageList from '../Images/ImageList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThList, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
+import { faThList, faCloudUploadAlt, faCropAlt } from '@fortawesome/free-solid-svg-icons'
 import ImageCrop from '../Images/ImageCrop'
+import Upload from '../Images/Upload'
 import SizeList from '../Size/SizeList'
+import { Size } from '../Size/SizeInterface'
 
 interface Provider {
   id: number;
@@ -29,7 +31,7 @@ function useImages(showPopup: boolean, activeTab: number) {
   const [isLoading, setIsLoading] = useState(true)
   const [totalPage, setTotalPage] = useState(1)
   const [page, setPage] = useState(0)
-  
+
   useEffect(() => {
     async function getImages() {
       setIsLoading(true);
@@ -43,16 +45,17 @@ function useImages(showPopup: boolean, activeTab: number) {
       getImages()
     }
   }, [page, showPopup, activeTab])
-  
+
   return [images, isLoading, totalPage, page, setPage];
 }
 
 export default function Editor() {
-  const [innerHeight] = useState(window.innerHeight - 200)
+  const [innerHeight] = useState(window.innerHeight - 150)
   const [value] = useState('')
   const [showPopup, setShowPopup] = useState(true)
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(3);
   const [images, isLoading, totalPage, page, setPage] = useImages(showPopup, activeTab) as [Provider[], boolean, number, number, React.Dispatch<React.SetStateAction<number>>];
+  const [size, setSize] = useState<Size>({})
 
   const handleChange = (content: any, delta: any, source: any, editor: any) => {
     // console.log(editor.getHTML()); // rich text
@@ -90,7 +93,7 @@ export default function Editor() {
 
   function displayItem() {
     if (isLoading) {
-      return <Loading totalItem={6} col={4} clsName="d-flex flex-wrap wrap-list" />
+      return <Loading totalItem={9} col={4} clsName="d-flex flex-wrap wrap-list" />
     }
 
     return <ImageList items={images} onChange={handleTest} prefixUrl={CONFIG.IMAGE_URL} clsName="d-flex flex-wrap wrap-list" />
@@ -106,6 +109,12 @@ export default function Editor() {
     }
   }
 
+  function handleSize(item: Size) {
+    setSize({
+      width: item.width,
+      height: item.height
+    })
+  }
   return (
     <div className="container">
       <Toolbar />
@@ -124,21 +133,23 @@ export default function Editor() {
               <header className="header">
                 <button className={`btn btn-list ${activeTab === 1 ? 'active' : ''}`} onClick={() => handleActiveTab(1)}><FontAwesomeIcon icon={faThList} size="lg" /></button>
                 <button className={`btn btn-upload ${activeTab === 2 ? 'active' : ''}`} onClick={() => handleActiveTab(2)}><FontAwesomeIcon icon={faCloudUploadAlt} /></button>
-                <button className="btn arrow arrow-close" onClick={handleClose} />
-                <button className="btn arrow arrow-expand" />
+                <button className={`btn btn-drop ${activeTab === 3 ? 'active' : ''}`} onClick={() => handleActiveTab(3)}><FontAwesomeIcon icon={faCropAlt} /></button>
+                <div className="arrow-action">
+                  <button className="btn arrow arrow-close" onClick={handleClose} />
+                  <button className="btn arrow arrow-expand" />
+                </div>
               </header>
+              {activeTab === 1 && <RSC noScrollX={true} style={{ height: innerHeight }}> {displayItem()}</RSC>}
+              {activeTab === 2 && <div className="image-crop-box" style={{ height: innerHeight }}> <Upload /></div>}
               {
-                activeTab === 1 ?
-                  <RSC noScrollX={true} style={{ height: innerHeight }}>
-                    {displayItem()}
-                  </RSC> :
-                  <div style={{ height: innerHeight }}>
-                    <SizeList actived={activeTab} onChange={(item) => console.log(item)} />
-                    <ImageCrop />
-                  </div>
+                activeTab === 3 &&
+                <div className="image-crop-box" style={{ height: innerHeight }}>
+                  <SizeList onChange={handleSize} />
+                  <ImageCrop size={size} />
+                </div>
               }
               <footer className="footer">
-                { activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />}
+                {activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />}
               </footer>
             </div>
           </div>

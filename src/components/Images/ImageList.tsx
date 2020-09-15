@@ -10,7 +10,7 @@ export default function ImageList({ items, clsName, prefixUrl, onChange }: UseIm
     }
   }
 
-  if (!items.length) return <div className={clsName}>No items</div>
+  if (!items.length) return <div className={clsName}></div>
 
   return (
     <div className={clsName ?? 'row'}>

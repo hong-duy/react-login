@@ -3,24 +3,26 @@ import CONFIG from "../../configs/config"
 import { getList } from "../../api/HandleRequest"
 import { UseSizeProp, Size } from "./SizeInterface";
 
-function useSizes(actived: number) {
+function useSizes() {
   const [sizes, setSizes] = useState<Size[]>([])
   const [error, setError] = useState('')
   useEffect(() => {
+    let current = true;
     async function fetchSizes() {
       const res = await getList(CONFIG.API_SIZE.LIST)
       if (res.isError) return setError(res.message)
-
-      setSizes(res.result.data);
+      if (current) setSizes(res.result.data)
     }
     fetchSizes()
-  }, [actived])
+
+    return () => { current = false }
+  }, [])
 
   return [sizes, setSizes, error];
 }
 
-export default function SizeList({ actived, onChange }: UseSizeProp) {
-  const [sizes, setSizes, error] = useSizes(actived) as [Size[], React.Dispatch<React.SetStateAction<Size[]>>, string];
+export default function SizeList({ onChange }: UseSizeProp) {
+  const [sizes, setSizes, error] = useSizes() as [Size[], React.Dispatch<React.SetStateAction<Size[]>>, string];
 
   /**
    * Handle click from prop

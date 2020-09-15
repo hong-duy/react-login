@@ -139,30 +139,34 @@ figure {
 .image-manager {
     position: fixed;
     width: auto;
-    top: 30px;
+    top: 55px;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 999;
-    padding: 50px 0;
     background: rgba(0, 0, 0, 0.6);
     .box {
-        // padding: 50px;
+        position: relative;
+        width: 100%;
         background: #f6f6f6;
     }
 
     .header {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
         height: 44px;
         background: #000000;
 
         .btn {
             height: 44px;
-            width: 44px;
+            width: 150px;
             position: relative;
             cursor: pointer;
+            color: $grayColor;
             overflow: visible;
             -webkit-appearance: none;
-            display: block;
+            display: inline-block;
             border: 0;
             padding: 0;
             margin: 0;
@@ -170,13 +174,6 @@ figure {
             transition: opacity 0.2s;
             box-shadow: none;
             border-radius: 0;
-        }
-        
-        .btn-list, .btn-upload {
-            float: left;
-            width: 150px;
-            color: $grayColor;
-
             &.active {
                 color: $whiteColor;
                 opacity: 1;
@@ -187,9 +184,14 @@ figure {
                 color: $whiteColor;
             }
         }
+        
+        .arrow-action {
+            position: absolute;
+            right: 0;
+        }
 
         .arrow {
-            float: right;
+            width: 44px;
             background: url(../../images/icons.png) 0 0 no-repeat;
             background-size: 264px 88px;
               

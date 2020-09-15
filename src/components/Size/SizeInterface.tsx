@@ -1,9 +1,9 @@
 export interface Size {
-    id: number;
+    id?: number;
     title?: string;
     width?: number;
     height?: number;
-    selected: boolean;
+    selected?: boolean;
 }
 
 export interface UseSizeProp {

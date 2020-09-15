@@ -55,3 +55,5 @@ http://www.ansonika.com/countryholidays/rooms_list.html
 http://www.nicdarkthemes.com/themes/hotel/wp/demo/chalet-wordpress-theme/
 https://dev.to/admantium/react-creating-a-custom-hook-for-fetching-data-168h
 https://stackoverflow.com/questions/53090432/react-hooks-right-way-to-clear-timeouts-and-intervals/53090848
+
+https://developer.okta.com/blog/2019/10/02/jwt-react-auth

@@ -7,7 +7,6 @@ import { getList, getToken } from './api/HandleRequest';
 import Form from './components/EditorCustom/Index';
 import EditorCustom from './components/EditorCustom/EditorCustom';
 import Editor from './components/Editor/Index';
-import ImageCrop from './components/Images/ImageCrop';
 
 function NoMatch() {
   let location = useLocation();
@@ -70,9 +69,6 @@ export default function AppRoute() {
           </Route>
           <Route exact path="/form-three">
             <Editor />
-          </Route>
-          <Route exact path="/crop-image">
-            <ImageCrop />
           </Route>
           <Route exact path="/tin-tuc-anime">
             <New />

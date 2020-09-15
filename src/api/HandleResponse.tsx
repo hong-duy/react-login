@@ -3,6 +3,7 @@ interface IHandleResponse {
     isValidate: boolean;
     message: any;
     result: any;
+    statusCode: number
 }
 
 /**
@@ -11,29 +12,36 @@ interface IHandleResponse {
  * @return IHandleResponse
  */
 export default async function HandleResponse(res: Response) {
-    let isError = false;
-    let isValidate = false;
-    let message = null;
+    let isError = false
+    let isValidate = false
+    let message = null
     let result = null
+    let statusCode = res.status
+    let isOk = res.ok
 
-    if (res.ok && res.status >= 200 && res.status < 300) {
+    if (isOk && statusCode >= 200 && statusCode < 300) {
         result = await res.json();
     }
 
-    if (!res.ok && res.status === 422) {
+    if (!isOk && statusCode === 422) {
         isValidate = true;
         message = await res.json();
     }
 
-    if (!res.ok && res.status === 404) {
+    if (!isOk && statusCode === 404) {
         isError = true;
         message = res.statusText;
     }
 
-    if (!res.ok && res.status === 500) {
+    if (!isOk && statusCode === 401) {
+        isError = true;
+        message = 'Token Expired, Vui lòng đăng nhập lại';
+    }
+
+    if (!isOk && statusCode === 500) {
         isError = true;
         message = res.statusText;
     }
 
-    return { isError, isValidate, message, result } as IHandleResponse;
+    return { isError, isValidate, message, result, statusCode } as IHandleResponse;
 };
