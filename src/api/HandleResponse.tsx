@@ -20,7 +20,11 @@ export default async function HandleResponse(res: Response) {
     let isOk = res.ok
 
     if (isOk && statusCode >= 200 && statusCode < 300) {
-        result = await res.json();
+        result = await res.json().catch(err => {
+            console.log(err);
+            isError = true
+            message = "error"
+        });
     }
 
     if (!isOk && statusCode === 422) {

@@ -9,33 +9,32 @@ import { UploadFile } from '../../api/HandleRequest';
 import CONFIG from "../../configs/config"
 import ImageList from "./ImageList"
 import { Size } from "../Size/SizeInterface"
-import { isEmptyObject } from "../../common/Utils"
 
 // Setting a high pixel ratio avoids blurriness in the canvas crop preview.
 const pixelRatio = 4;
 
 // We resize the canvas down when saving on retina devices otherwise the image
 // will be double or triple the preview size.
-function getResizedCanvas(canvas: HTMLCanvasElement, newWidth: number, newHeight: number) {
-  const tmpCanvas = document.createElement("canvas");
-  tmpCanvas.width = newWidth;
-  tmpCanvas.height = newHeight;
+// function getResizedCanvas(canvas: HTMLCanvasElement, newWidth: number, newHeight: number) {
+//   const tmpCanvas = document.createElement("canvas");
+//   tmpCanvas.width = newWidth;
+//   tmpCanvas.height = newHeight;
 
-  const ctx: any = tmpCanvas.getContext("2d");
-  ctx.drawImage(
-    canvas,
-    0,
-    0,
-    canvas.width,
-    canvas.height,
-    0,
-    0,
-    newWidth,
-    newHeight
-  );
+//   const ctx: any = tmpCanvas.getContext("2d");
+//   ctx.drawImage(
+//     canvas,
+//     0,
+//     0,
+//     canvas.width,
+//     canvas.height,
+//     0,
+//     0,
+//     newWidth,
+//     newHeight
+//   );
 
-  return tmpCanvas;
-}
+//   return tmpCanvas;
+// }
 
 // function generateDownload(previewCanvas: any, crop: any) {
 //   if (!crop || !previewCanvas) {

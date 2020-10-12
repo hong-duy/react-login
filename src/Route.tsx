@@ -22,14 +22,13 @@ function NoMatch() {
 
 function Home() {
 
-  async function getData()
-  {
+  async function getData() {
     // await getList(CONFIG.API_IMAGE, 8, 0);
     await getList(CONFIG.API_POST_TEST, 8, 0);
+
   }
 
-  async function refreshToken()
-  {
+  async function refreshToken() {
     const res = await getToken(CONFIG.API_REFRESH_TOKEN);
     if (!res.isError) {
       localStorage.setItem("token", JSON.stringify(res.result.token));

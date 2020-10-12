@@ -57,3 +57,7 @@ https://dev.to/admantium/react-creating-a-custom-hook-for-fetching-data-168h
 https://stackoverflow.com/questions/53090432/react-hooks-right-way-to-clear-timeouts-and-intervals/53090848
 
 https://developer.okta.com/blog/2019/10/02/jwt-react-auth
+
+
+http://www.2035themes.com/luxen/index.html
+https://velikorodnov.com/html/milenia/rooms_layout_v3.html

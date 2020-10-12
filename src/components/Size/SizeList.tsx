@@ -44,7 +44,7 @@ export default function SizeList({ onChange }: UseSizeProp) {
   return (
     <div className="d-flex flex-wrap size">
       {error && <div>{error}</div>}
-      {sizes.map((item: Size, idx: number) => <span key={idx} onClick={(event) => handleClick(event, item)} className={`item ${item.selected === true ? 'active': ''}`}>{item.title}</span>)}
+      {sizes.map((item: Size, idx: number) => <span key={idx} onClick={(event) => handleClick(event, item)} className={`item ${item.selected === true ? 'active' : ''}`}>{item.title}</span>)}
     </div>
   )
 }

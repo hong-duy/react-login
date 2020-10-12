@@ -15,6 +15,7 @@ import ImageCrop from '../Images/ImageCrop'
 import Upload from '../Images/Upload'
 import SizeList from '../Size/SizeList'
 import { Size } from '../Size/SizeInterface'
+import { useRef } from 'react'
 
 interface Provider {
   id: number;
@@ -49,46 +50,58 @@ function useImages(showPopup: boolean, activeTab: number) {
   return [images, isLoading, totalPage, page, setPage];
 }
 
+
+const modules = {
+  toolbar: {
+    container: "#toolbar",
+    handlers: {
+      undo: undoChange,
+      redo: redoChange,
+      images: handleImageList
+    }
+  },
+  history: {
+    delay: 500,
+    maxStack: 100,
+    userOnly: true
+  }
+};
+
+async function handleImageList() {
+  console.log(11);
+  // setShowPopup(true);
+}
+
+
 export default function Editor() {
-  const [innerHeight] = useState(window.innerHeight - 150)
-  const [value] = useState('')
+  const [innerHeight] = useState(window.innerHeight - 300)
+  const [valueEditor] = useState('')
   const [showPopup, setShowPopup] = useState(true)
-  const [activeTab, setActiveTab] = useState(3);
+  const [activeTab, setActiveTab] = useState(1);
   const [images, isLoading, totalPage, page, setPage] = useImages(showPopup, activeTab) as [Provider[], boolean, number, number, React.Dispatch<React.SetStateAction<number>>];
   const [size, setSize] = useState<Size>({})
+  const inputElement = useRef(null);
 
-  const handleChange = (content: any, delta: any, source: any, editor: any) => {
-    // console.log(editor.getHTML()); // rich text
+  const handleEditorChange = (content: any, delta: any, source: any, editor: any) => {
+    console.log(111);
+    console.log(editor.getHTML()); // rich text
     // console.log(editor.getText()); // plain text
     // console.log(editor.getLength()); // number of characters
   }
 
-  async function handleImageList() {
-    setShowPopup(true);
-  }
 
-  const modules = {
-    toolbar: {
-      container: "#toolbar",
-      handlers: {
-        undo: undoChange,
-        redo: redoChange,
-        images: handleImageList
-      }
-    },
-    history: {
-      delay: 500,
-      maxStack: 100,
-      userOnly: true
+  function handleSelectImg(item: any) {
+    console.log(item);
+
+    // ReactQuill.in(10, 'image', 'https://quilljs.com/images/cloud.png');
+    if (inputElement && inputElement.current) {
+      const quill = inputElement.current as any;
+      const editor = quill.getEditor();
+      console.log(editor)
+      editor.insertText(0, 'Hello', 'bold', true);
+
+      // editor.insertEmbed(0, 'image', 'https://i.picsum.photos/id/211/200/300.jpg')
     }
-  };
-
-  function handleClose() {
-    setShowPopup(false)
-  }
-
-  function handleTest(item: any) {
-    console.log(item)
   }
 
   function displayItem() {
@@ -96,12 +109,8 @@ export default function Editor() {
       return <Loading totalItem={9} col={4} clsName="d-flex flex-wrap wrap-list" />
     }
 
-    return <ImageList items={images} onChange={handleTest} prefixUrl={CONFIG.IMAGE_URL} clsName="d-flex flex-wrap wrap-list" />
+    return <ImageList items={images} onChange={handleSelectImg} prefixUrl={CONFIG.IMAGE_URL} clsName="d-flex flex-wrap wrap-list" />
   }
-
-  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
 
   function handleActiveTab(key: number) {
     if (key !== activeTab) {
@@ -115,19 +124,22 @@ export default function Editor() {
       height: item.height
     })
   }
+
+
   return (
     <div className="container">
       <Toolbar />
       <ReactQuill
+        ref={e => console.log('init')}
         theme="snow"
-        value={value || ''}
-        onChange={handleChange}
+        value={valueEditor || ''}
+        onChange={handleEditorChange}
         placeholder={"Write something awesome..."}
         modules={modules}
       />
       {
         showPopup &&
-        <div className="image-manager">
+        <div className="image-manager" style={{ top: 200 }}>
           <div className="container">
             <div className="box">
               <header className="header">
@@ -135,7 +147,7 @@ export default function Editor() {
                 <button className={`btn btn-upload ${activeTab === 2 ? 'active' : ''}`} onClick={() => handleActiveTab(2)}><FontAwesomeIcon icon={faCloudUploadAlt} /></button>
                 <button className={`btn btn-drop ${activeTab === 3 ? 'active' : ''}`} onClick={() => handleActiveTab(3)}><FontAwesomeIcon icon={faCropAlt} /></button>
                 <div className="arrow-action">
-                  <button className="btn arrow arrow-close" onClick={handleClose} />
+                  <button className="btn arrow arrow-close" onClick={() => setShowPopup(false)} />
                   <button className="btn arrow arrow-expand" />
                 </div>
               </header>
@@ -149,7 +161,7 @@ export default function Editor() {
                 </div>
               }
               <footer className="footer">
-                {activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={handleChangePage} showFirstButton showLastButton />}
+                {activeTab === 1 && <Pagination count={totalPage} page={page} boundaryCount={4} onChange={(_e, page) => setPage(page)} showFirstButton showLastButton />}
               </footer>
             </div>
           </div>

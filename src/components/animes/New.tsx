@@ -21,14 +21,18 @@ export default function New() {
 	const [isLoading, setLoading] = useState(false);
 
 	useEffect(() => {
+		let current = true;
+
 		async function fetchAnime() {
-			// const res = await getList(CONFIG.API_NEWS, 8, offset);
-			const res = await getList(CONFIG.API_IMAGE.LIST, 8, offset);
-			setItems(prevAnimes => [...prevAnimes, ...res.result.data]);
-			setLoading(false);
+			const res = await getList(CONFIG.API_NEWS, 0, 10, offset);
+			if (current) {
+				setItems(prevAnimes => [...prevAnimes, ...res.result]);
+				setLoading(false);
+			}
 		}
 
 		fetchAnime();
+		return () => { current = false }
 	}, [offset]); // ✅
 
 	const loadMore = async () => {
@@ -43,7 +47,7 @@ export default function New() {
 					{
 						items.map((item: Provider, i: number) =>
 							<div className="col-3" key={i}>
-								<div className="item" style={{ position: 'relative'}}>
+								<div className="item" style={{ position: 'relative' }}>
 									<div className="item-thumbnail">
 										<a href={item.slug}>
 											<img src={item.thumbnail} alt={item.title} />
