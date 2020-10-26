@@ -8,7 +8,7 @@
  * @return string
  */
 export const objectToQueryString = (params: object | any, glue: string = ':', delimiter: string = ';') => {
-    return Object.keys(JSON.parse(JSON.stringify(params))).map(key => key + `${glue}` + params[key]).join(delimiter);
+  return Object.keys(JSON.parse(JSON.stringify(params))).map(key => key + `${glue}` + params[key]).join(delimiter);
 };
 
 /**
@@ -21,11 +21,11 @@ export const objectToQueryString = (params: object | any, glue: string = ':', de
  * @return boolean
  */
 export const isEmptyKeyInObject = (params: object) => {
-    if (Object.keys(JSON.parse(JSON.stringify(params))).length) {
-        return true;
-    }
+  if (Object.keys(JSON.parse(JSON.stringify(params))).length) {
+    return true;
+  }
 
-    return false;
+  return false;
 };
 
 /**
@@ -35,15 +35,15 @@ export const isEmptyKeyInObject = (params: object) => {
  * @return boolean
  */
 export const showError = (clientError: any, errorInfo: any, key: string) => {
-    if (clientError[key] && !isEmpty(clientError[key])) {
-        return clientError[key];
-    }
+  if (clientError[key] && !isEmpty(clientError[key])) {
+    return clientError[key];
+  }
 
-    if (errorInfo.errors[key] && Array.isArray(errorInfo.errors[key])) {
-        return errorInfo.errors[key][0];
-    }
+  if (errorInfo.errors[key] && Array.isArray(errorInfo.errors[key])) {
+    return errorInfo.errors[key][0];
+  }
 
-    return '';
+  return '';
 }
 
 /**
@@ -53,5 +53,19 @@ export const showError = (clientError: any, errorInfo: any, key: string) => {
  * @return boolean
  */
 export const isEmpty = (value: any) => {
-    return (value === undefined || value === null || value === '');
+  return (value === 'undefined' || value === null || value === '');
+}
+
+export function sleep(ms: number) {
+  return new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+}
+
+/**
+ * 
+ * @param value 
+ */
+export function isEmptyObject(value: any) {
+  return Object.keys(value).length === 0;
 }

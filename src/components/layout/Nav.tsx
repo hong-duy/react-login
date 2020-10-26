@@ -30,11 +30,15 @@ export default function Nav() {
         <ul className="nav-menu">
           <li><Link to='/' className="item">Home</Link></li>
           <li><Link to='/form' className="item">Form</Link></li>
-          <li><Link to='/tin-tuc-anime' className="item">Tin tức anime</Link></li>
-          <li><Link to='/nhan-vat' className="item">Nhân vật</Link></li>
+          <li><Link to='/form-two' className="item">Editor customize</Link></li>
+          <li><Link to='/form-three' className="item">Editor normal</Link></li>
+          <li><Link to='/crop-image' className="item">Crop image</Link></li>
+          <li><Link to='/tin-tuc-anime' className="item">News</Link></li>
+          <li><Link to='/nhan-vat' className="item">Characters</Link></li>
+
           {
             state.isAuthenticated || isAuthenticated ?
-              <li className="login"><button onClick={() => dispatch({ type: "LOGOUT" })}><img src={user.profile_url} alt=""/></button></li> :
+              <li className="login"><button onClick={() => dispatch({ type: "LOGOUT" })}><img src={user.profile_url} alt="" /></button></li> :
               <li className="login">
                 <GoogleLogin
                   clientId={CONFIG.GOOGLE_CLIENT_ID}
