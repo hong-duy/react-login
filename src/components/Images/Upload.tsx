@@ -11,7 +11,7 @@ import { AuthContext } from "../../reducers/Auth"
 
 // Setting a high pixel ratio avoids blurriness in the canvas crop preview.
 export default function Upload() {
-  const { state, dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
   const [innerHeight] = useState(window.innerHeight - 230)
   const [isMultipleFile, /*setIsMultipleFile*/] = useState(false);
   const [acceptedFiles, setAcceptedFiles] = useState<any>([])

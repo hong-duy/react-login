@@ -50,46 +50,59 @@ function useImages(showPopup: boolean, activeTab: number) {
   return [images, isLoading, totalPage, page, setPage];
 }
 
-
-const modules = {
-  toolbar: {
-    container: "#toolbar",
-    handlers: {
-      undo: undoChange,
-      redo: redoChange,
-      images: handleImageList
-    }
-  },
-  history: {
-    delay: 500,
-    maxStack: 100,
-    userOnly: true
-  }
-};
-
-async function handleImageList() {
-  console.log(11);
-  // setShowPopup(true);
-}
-
-
 export default function Editor() {
   const [innerHeight] = useState(window.innerHeight - 300)
-  const [valueEditor] = useState('')
-  const [showPopup, setShowPopup] = useState(true)
+  const [valueEditor, setValueEditor] = useState('')
+  const [showPopup, setShowPopup] = useState(false)
   const [activeTab, setActiveTab] = useState(1);
   const [images, isLoading, totalPage, page, setPage] = useImages(showPopup, activeTab) as [Provider[], boolean, number, number, React.Dispatch<React.SetStateAction<number>>];
   const [size, setSize] = useState<Size>({})
   const inputElement = useRef(null);
 
   const handleEditorChange = (content: any, delta: any, source: any, editor: any) => {
-    console.log(111);
-    console.log(editor.getHTML()); // rich text
+    // IF we don't setState for editor, the value of editor will be lost after we click, change or have a new event make state change
+    setValueEditor(editor.getHTML())
+    // console.log(editor.getHTML()); // rich text
     // console.log(editor.getText()); // plain text
     // console.log(editor.getLength()); // number of characters
   }
 
+  const modules = {
+    toolbar: {
+      container: "#toolbar",
+      handlers: {
+        undo: undoChange,
+        redo: redoChange,
+        images: handleImageList
+      }
+    },
+    history: {
+      delay: 500,
+      maxStack: 100,
+      userOnly: true
+    }
+  };
 
+  async function handleImageList() {
+    setShowPopup(true);
+    // var range = inputElement.current.getEditor().getSelection();
+    // console.log(range.index)
+    // var value = prompt('What is the image URL');
+
+    if (inputElement && inputElement.current) {
+      const quill = inputElement.current as any;
+      const editor = quill.getEditor();
+      console.log(editor.getSelection())
+    }
+  }
+
+  function handleGetSelection() {
+    if (inputElement && inputElement.current) {
+      const quill = inputElement.current as any;
+      const editor = quill.getEditor();
+      console.log(editor.getSelection())
+    }
+  }
   function handleSelectImg(item: any) {
     console.log(item);
 
@@ -97,10 +110,10 @@ export default function Editor() {
     if (inputElement && inputElement.current) {
       const quill = inputElement.current as any;
       const editor = quill.getEditor();
-      console.log(editor)
-      editor.insertText(0, 'Hello', 'bold', true);
+      console.log(editor.getSelection())
+      // editor.insertText(0, 'Hello', 'bold', true);
 
-      // editor.insertEmbed(0, 'image', 'https://i.picsum.photos/id/211/200/300.jpg')
+      editor.insertEmbed(0, 'image', 'https://storage.googleapis.com/duy-bucket/uploads-test/xBahjUcf1zJ9CQEMLENIgLiCNP5neqnxaVTArZBw.jpeg')
     }
   }
 
@@ -130,9 +143,9 @@ export default function Editor() {
     <div className="container">
       <Toolbar />
       <ReactQuill
-        ref={e => console.log('init')}
+        ref={inputElement}
         theme="snow"
-        value={valueEditor || ''}
+        value={valueEditor}
         onChange={handleEditorChange}
         placeholder={"Write something awesome..."}
         modules={modules}
@@ -167,6 +180,9 @@ export default function Editor() {
           </div>
         </div>
       }
+      <div style={{ position: "fixed", top: 200, right: 100 }}>
+        <button onClick={handleGetSelection}>SHOW IMAGE</button>
+      </div>
     </div>
   )
 }
