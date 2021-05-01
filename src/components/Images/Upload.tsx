@@ -13,7 +13,7 @@ import { AuthContext } from "../../reducers/Auth"
 export default function Upload() {
   const { dispatch } = useContext(AuthContext);
   const [innerHeight] = useState(window.innerHeight - 230)
-  const [isMultipleFile, /*setIsMultipleFile*/] = useState(false);
+  const [isMultipleFile] = useState(false);
   const [acceptedFiles, setAcceptedFiles] = useState<any>([])
   const [rejectFiles, setRejectFiles] = useState<any>([])
   const [saving, setSaving] = useState(false);
@@ -37,7 +37,7 @@ export default function Upload() {
       setSaving(false);
       if (res.isError) {
         if (res.statusCode === 401) {
-          dispatch({ type: "LOGOUT" })
+          return dispatch({ type: "LOGOUT" })
         }
         return setError(res.message);
       }
@@ -52,8 +52,7 @@ export default function Upload() {
     if (acceptedFiles.length > 0) {
       upload();
     }
-  }, [acceptedFiles])
-
+  }, [acceptedFiles, dispatch])
 
   function renderDrop() {
     if (saving) {
